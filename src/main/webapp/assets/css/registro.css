@@ -1,0 +1,13 @@
+.centrado {
+    margin: auto;
+    align-items: center;
+    padding-top: 150px;
+}
+
+.navbar-brand {
+    font-size: 1.85rem !important;
+}
+
+.nav-item {
+    font-size: 1.25rem !important;
+}
