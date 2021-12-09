@@ -11,21 +11,21 @@ public class PerfilUsuario extends ActivableItem{
 
 	private double tiempoDisponible;
 	private String nombre;
-	private TipoDeAtraccion tipoDeAtraccion;
+	private TipoAtraccion tipoDeAtraccion;
 	private Itinerario itinerario;
 	private String username;
 	private String password;
 	private boolean isAdmin;
 	private Integer Id;
 
-	public PerfilUsuario(Integer Id, String nombre, double presupuesto, int tiempoDisponible, 
-			TipoDeAtraccion tipoDeAtraccion, String username, 
+	public PerfilUsuario(Integer Id, String nombre, double presupuesto, int tiempoDisponible,
+						 TipoAtraccion tipoDeAtraccion, String username,
 			String password, boolean isAdmin, boolean active) {
 		this( nombre,  presupuesto,  tiempoDisponible, tipoDeAtraccion,  username, password,  isAdmin,  active);
 		this.Id = Id;
 	}
 
-	public PerfilUsuario(String nombre, Double presupuesto, int tiempoDisponible, TipoDeAtraccion tipoDeAtraccion, String username,
+	public PerfilUsuario(String nombre, Double presupuesto, int tiempoDisponible, TipoAtraccion tipoDeAtraccion, String username,
 			String password, Boolean isAdmin, boolean active) {
 		super(active);
 		this.nombre = nombre;
@@ -86,7 +86,7 @@ public class PerfilUsuario extends ActivableItem{
 		return tiempoDisponible;
 	}
 
-	public TipoDeAtraccion getTipoDeAtraccion() {
+	public TipoAtraccion getTipoDeAtraccion() {
 
 		return tipoDeAtraccion;
 	}

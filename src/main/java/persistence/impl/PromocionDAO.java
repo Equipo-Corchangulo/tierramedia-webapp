@@ -5,13 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Atraccion;
-import model.Facturable;
-import model.PromoAbsoluta;
-import model.PromoAxB;
-import model.PromoPorcentual;
-import model.Promocion;
-import model.TipoDeAtraccion;
+import model.*;
 import persistence.IAtraccionDAO;
 import persistence.IPromocionDAO;
 import persistence.commons.ConnectionProvider;
@@ -20,6 +14,7 @@ import persistence.commons.DAOFactory;
 public class PromocionDAO implements IPromocionDAO {
 	private static IAtraccionDAO atraccionesDAO = DAOFactory.getAtraccionDAO();
 	public Promocion toPromocion(ResultSet result) throws SQLException {
+		TipoAtraccion tipoAtraccion =  DAOFactory.getTipoAtraccionDAO().find(result.getInt("tipo_atraccion"));
 		Promocion promo;
 		//List<Facturable> listaDeAtracciones, TipoDeAtraccion tipoDeAtraccion, String nombreDePromocion
 		List<Facturable> listaDeAtracciones = new ArrayList<Facturable>();
@@ -31,14 +26,14 @@ public class PromocionDAO implements IPromocionDAO {
 	    int id = result.getInt("id");
 		if(result.getDouble("porcentaje") >0 ) 
 		{
-			promo = new PromoPorcentual(listaDeAtracciones, TipoDeAtraccion.valueOf(result.getString("nombre_tipo")), result.getString("nombre"),result.getDouble("porcentaje"),active, id);
+			promo = new PromoPorcentual(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),result.getDouble("porcentaje"),active, id);
 		}
 		else if (result.getInt("atraccion_extra")!=0) {
 			Atraccion atraccionExtra = atraccionesDAO.find(result.getInt("atraccion_extra"));
-			promo = new PromoAxB(listaDeAtracciones, TipoDeAtraccion.valueOf(result.getString("nombre_tipo")), result.getString("nombre"),atraccionExtra,active, id);
+			promo = new PromoAxB(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),atraccionExtra,active, id);
 		}
 		else {
-			promo = new PromoAbsoluta(listaDeAtracciones, TipoDeAtraccion.valueOf(result.getString("nombre_tipo")), result.getString("nombre"),result.getDouble("costo_fijo"),active, id);
+			promo = new PromoAbsoluta(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),result.getDouble("costo_fijo"),active, id);
 		}
 		return promo;
 	}
@@ -46,7 +41,6 @@ public class PromocionDAO implements IPromocionDAO {
 	public List<Promocion>findAll() throws SQLException {
 		String query = "SELECT *, GROUP_CONCAT(lista_atracciones.atraccion_id,'-') AS atraccion_list "
 				+ "FROM promociones "
-				+ "LEFT JOIN tipo_de_atracciones on promociones.tipo_atraccion = tipo_de_atracciones.id"
 				+ " LEFT JOIN atracciones_promocion AS lista_atracciones on lista_atracciones.promocion_id = promociones.id"
 				+ "  GROUP by lista_atracciones.promocion_id";
 		List<Promocion> listaPromociones = new ArrayList<Promocion>();
@@ -79,8 +73,15 @@ public class PromocionDAO implements IPromocionDAO {
 
 	@Override
 	public int delete(Integer id) {
-		// TODO Auto-generated method stub
-		return 0;
+		String query = "UPDATE promociones SET active = 0 " + "WHERE id = " + id;
+		try {
+			ConnectionProvider.executeUpdate(query);
+			return 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 }

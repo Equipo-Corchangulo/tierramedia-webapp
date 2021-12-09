@@ -50,7 +50,7 @@
 		                        <th scope="row"><c:out value="${ promocion.getID() }"></c:out></th>
 		                        <td><c:out value="${ promocion.getNombreDePromocion() }"></c:out></td>
 		                        <td><c:out value="${ promocion.getTipoPromo().toString()}"></c:out></td>
-		                        <td><c:out value="${ promocion.getTipoDeAtraccion().toString() }"></c:out></td>		                        
+		                        <td><c:out value="${ promocion.getTipoDeAtraccion().getName() }"></c:out></td>
 		                        <td><c:out value="${ promocion.obtenerTiempoTotal() }"></c:out></td>
 		                        <td><c:out value="${ promocion.obtenerCostoTotal() }"></c:out></td>
 		                        <td>
@@ -60,9 +60,9 @@
 		                        </td>
 		                        <td>
 		                            <div class="row justify-content-between">
-		                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="edit.adm?id=${ atraccion.getID() }">
+		                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="edit.adm?id=${ promocion.getID() }">
 		                                    <i class="material-icons">edit</i></a>
-		                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ atraccion.getID() }">
+		                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ promocion.getID() }">
 		                                    <i class="material-icons">delete</i></a>
 		                            </div>
 		                        </td>

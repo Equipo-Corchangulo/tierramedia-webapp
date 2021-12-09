@@ -9,18 +9,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.PerfilUsuario;
+import model.TipoAtraccion;
 import model.TipoDeAtraccion;
+import services.TipoAtraccionService;
 import services.UsuarioService;
 
 @WebServlet("/usuario/create.adm")
 public class CreateUsuarioServlet extends HttpServlet implements Servlet {
 	private static final long serialVersionUID = -4953157559512379392L;
 	UsuarioService usuarioService;
+	TipoAtraccionService tipoAtraccionService;
 	
 	@Override
 	public void init() throws ServletException {
 		super.init();
 		usuarioService = new UsuarioService();
+		tipoAtraccionService = new TipoAtraccionService();
 	}
 	
 	@Override
@@ -39,8 +43,13 @@ public class CreateUsuarioServlet extends HttpServlet implements Servlet {
 		Double money = Double.parseDouble(req.getParameter("money"));
 		int tiempo = Integer.parseInt(req.getParameter("tiempo"));
 		boolean isAdmin = req.getParameter("usertype").equals("Admin");
-		TipoDeAtraccion tipo = TipoDeAtraccion.valueOf(req.getParameter("tipo").toUpperCase());
-			
+		TipoAtraccion tipo = null;
+		try {
+			tipo = tipoAtraccionService.getByName(req.getParameter("tipo").toUpperCase());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		PerfilUsuario user = usuarioService.create(nombre, username, password, money, tiempo, isAdmin, tipo, true);
 		
 		if(user.isValid()) {

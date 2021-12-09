@@ -12,4 +12,7 @@ public class PromocionService {
 		return DAOFactory.getPromocionDAO().findAll();
 	}
 
+    public void delete(Integer id) {
+		DAOFactory.getPromocionDAO().delete(id);
+    }
 }

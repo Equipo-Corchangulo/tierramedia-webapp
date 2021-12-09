@@ -8,9 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.PerfilUsuario;
-import model.TipoDeAtraccion;
+import model.TipoAtraccion;
 import persistence.IUsuarioDAO;
 import persistence.commons.ConnectionProvider;
+import persistence.commons.DAOFactory;
 //import persistence.commons.MissingDataException;
 
 
@@ -19,9 +20,11 @@ public class UsuariosDAOImpl implements IUsuarioDAO {
 	
 	@Override
 	public PerfilUsuario toPerfilUsuario(ResultSet result) throws SQLException {
-	    return new PerfilUsuario(result.getInt("id"), result.getString("nombre"), result.getInt("presupuesto"), 
-	    		result.getInt("tiempo_disponible"), 
-	    		TipoDeAtraccion.values()[result.getInt("atraccion_preferida")-1], result.getString("username"), 
+		TipoAtraccion tipoAtraccion =  DAOFactory.getTipoAtraccionDAO().find(result.getInt("atraccion_preferida"));
+
+	    return new PerfilUsuario(result.getInt("id"), result.getString("nombre"), result.getInt("presupuesto"),
+	    		result.getInt("tiempo_disponible"),
+				tipoAtraccion, result.getString("username"),
 	    		result.getString("password"), result.getBoolean("admin"), result.getBoolean("active"));
 	}
 	
@@ -99,7 +102,7 @@ public class UsuariosDAOImpl implements IUsuarioDAO {
 			statement.setString(3, t.getNombre());
 			statement.setString(4, String.valueOf(t.getPresupuesto()));
 			statement.setString(5, String.valueOf(t.getTiempoDisponible()));
-			statement.setString(6, String.valueOf(t.getTipoDeAtraccion().ordinal()+1));
+			statement.setString(6, String.valueOf(t.getTipoDeAtraccion().getID()));
 			statement.setString(7, t.isAdmin()?"1":"0");
 			statement.execute();
 			return 0;

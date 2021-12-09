@@ -50,7 +50,7 @@
 		                        <td><c:out value="${ atraccion.getNombre() }"></c:out></td>
 		                        <td><c:out value="${ atraccion.obtenerCostoTotal() }"></c:out></td>
 		                        <td><c:out value="${ atraccion.obtenerTiempoTotal() }"></c:out></td>
-		                        <td><c:out value="${ atraccion.getTipoAtraccion().toString() }"></c:out></td>
+		                        <td><c:out value="${ atraccion.getTipoAtraccion().getName() }"></c:out></td>
 		                        <td><c:out value="${ atraccion.getCupo() }"></c:out></td>
 		                        <td>
 		                            <div class="row justify-content-between">

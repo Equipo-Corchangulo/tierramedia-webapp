@@ -12,11 +12,11 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 
 	public String nombreDePromocion;
 	public List<Facturable> listaDeAtracciones;
-	public TipoDeAtraccion tipoDeAtraccion;
+	public TipoAtraccion tipoDeAtraccion;
 	public enumDePromocion tipo;
 	public int ID;
 
-	public Promocion(List<Facturable> listaDeAtracciones, TipoDeAtraccion tipoDeAtraccion, String nombreDePromocion, boolean active, enumDePromocion tipo, int ID) {
+	public Promocion(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDeAtraccion, String nombreDePromocion, boolean active, enumDePromocion tipo, int ID) {
 		super(active);
 		this.listaDeAtracciones = listaDeAtracciones;
 		this.tipoDeAtraccion = tipoDeAtraccion;
@@ -49,11 +49,11 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 		this.listaDeAtracciones = listaDeAtracciones;
 	}
 
-	public TipoDeAtraccion getTipoDeAtraccion() {
+	public TipoAtraccion getTipoDeAtraccion() {
 		return tipoDeAtraccion;
 	}
 
-	public void setTipoDeAtraccion(TipoDeAtraccion tipoDeAtraccion) {
+	public void setTipoDeAtraccion(TipoAtraccion tipoDeAtraccion) {
 		this.tipoDeAtraccion = tipoDeAtraccion;
 	}
 
@@ -109,7 +109,7 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 
 	}
 	@Override
-	public TipoDeAtraccion getTipo() {
+	public TipoAtraccion getTipo() {
 
 		return this.tipoDeAtraccion;
 

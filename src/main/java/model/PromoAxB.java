@@ -7,7 +7,7 @@ public class PromoAxB extends Promocion {
 
 	public Facturable atraccionExtra;
 
-	public PromoAxB(List<Facturable> listaDeAtracciones, TipoDeAtraccion tipoDePromocion
+	public PromoAxB(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDePromocion
 			, String nombreDePromocion, Facturable atraccionExtra, boolean active, int id) {
 		super(listaDeAtracciones, tipoDePromocion, nombreDePromocion, active, enumDePromocion.AXB, id);
 		this.atraccionExtra = atraccionExtra;

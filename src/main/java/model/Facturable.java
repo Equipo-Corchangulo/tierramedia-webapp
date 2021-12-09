@@ -14,7 +14,7 @@ public interface Facturable {
 
 	 boolean esPromocion();
 
-	 TipoDeAtraccion getTipo();
+	TipoAtraccion getTipo();
 
 	 boolean seEncuentraEnElFacturable(Facturable facturable);
 

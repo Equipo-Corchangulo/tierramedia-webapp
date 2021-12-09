@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="tierramedia" target="1.7" />
+      <module name="tierramedia" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

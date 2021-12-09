@@ -5,6 +5,7 @@ import java.util.List;
 
 import model.Atraccion;
 import model.PerfilUsuario;
+import model.TipoAtraccion;
 import model.TipoDeAtraccion;
 import persistence.commons.DAOFactory;
 
@@ -15,10 +16,10 @@ public class AtraccionService {
 	}
 	
 	public void delete(Integer id) {
-		DAOFactory.getUsuarioDAO().delete(id);
+		DAOFactory.getAtraccionDAO().delete(id);
 	}
 	
-	public PerfilUsuario update(Integer id, String nombre, String username, String password, Double money, int tiempo, Boolean isAdmin, TipoDeAtraccion tipo, boolean active) {
+	public PerfilUsuario update(Integer id, String nombre, String username, String password, Double money, int tiempo, Boolean isAdmin, TipoAtraccion tipo, boolean active) {
 		PerfilUsuario user = new PerfilUsuario(id, nombre, money, tiempo, 
 				tipo, username, password, isAdmin, active);
 		if(user.isValid()) {
@@ -31,7 +32,7 @@ public class AtraccionService {
 		return DAOFactory.getUsuarioDAO().find(id);
 	}
 	
-	public PerfilUsuario create( String nombre, String username, String password, Double money, int tiempo, boolean isAdmin, TipoDeAtraccion tipo, boolean active) {
+	public PerfilUsuario create( String nombre, String username, String password, Double money, int tiempo, boolean isAdmin, TipoAtraccion tipo, boolean active) {
 		PerfilUsuario user = new PerfilUsuario(nombre, money, tiempo, 
 				tipo, username, password, isAdmin, active);
 		if(user.isValid()) {
@@ -40,4 +41,7 @@ public class AtraccionService {
 		return user;
 	}
 
+	public void delete(int id){
+		DAOFactory.getAtraccionDAO().delete(id);
+	}
 }

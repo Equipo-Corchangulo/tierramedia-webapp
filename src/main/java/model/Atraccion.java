@@ -11,10 +11,10 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	private double tiempoPromedio;
 	private int cupoDiario;
 	private String nombre;
-	private TipoDeAtraccion tipoAtraccion;
+	private TipoAtraccion tipoAtraccion;
 	private int ID;
 
-	public Atraccion(String nombre, double costoVisita, double tiempoPromedio, int cupoDiario, TipoDeAtraccion tipoAtraccion, int ID, boolean active) {
+	public Atraccion(String nombre, double costoVisita, double tiempoPromedio, int cupoDiario, TipoAtraccion tipoAtraccion, int ID, boolean active) {
 		super(active);
 		this.nombre = nombre;
 		this.costoVisita = costoVisita;
@@ -58,10 +58,10 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public TipoDeAtraccion getTipoAtraccion() {
+	public TipoAtraccion getTipoAtraccion() {
 		return tipoAtraccion;
 	}
-	public void setTipoAtraccion(TipoDeAtraccion tipoAtraccion) {
+	public void setTipoAtraccion(TipoAtraccion tipoAtraccion) {
 		this.tipoAtraccion = tipoAtraccion;
 	}
 	@Override
@@ -82,7 +82,7 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	}
 	
 	@Override
-	public TipoDeAtraccion getTipo() {
+	public TipoAtraccion getTipo() {
 
 		return this.tipoAtraccion;
 

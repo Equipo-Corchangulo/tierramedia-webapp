@@ -50,7 +50,7 @@
 		                        <td><c:out value="${ usuario.getNombre() }"></c:out></td>
 		                        <td><c:out value="${ usuario.getPresupuesto() }"></c:out></td>
 		                        <td><c:out value="${ usuario.getTiempoDisponible() }"></c:out></td>
-		                        <td><c:out value="${ usuario.getTipoDeAtraccion() }"></c:out></td>
+		                        <td><c:out value="${ usuario.getTipoDeAtraccion().getName() }"></c:out></td>
 		                        <td><c:out value='${ usuario.isAdmin()?" Admin": "Regular" }'></c:out></td>
 		                        <td>
 		                            <div class="row justify-content-between">
