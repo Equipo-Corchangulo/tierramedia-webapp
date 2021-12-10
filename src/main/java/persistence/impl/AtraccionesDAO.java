@@ -7,6 +7,8 @@ import persistence.IAtraccionDAO;
 import persistence.commons.ConnectionProvider;
 import persistence.commons.DAOFactory;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -55,14 +57,47 @@ public class AtraccionesDAO implements IAtraccionDAO {
 
 	@Override
 	public int insert(Atraccion t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String query = "INSERT into atracciones(nombre, costo_visita,tiempo_promedio,cupo_diario,tipo) VALUES (?,?,?,?,?)";
+		Connection conn;
+		try {
+			conn = ConnectionProvider.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query);
+
+			statement.setString(1,  String.valueOf(t.getNombre()));
+			statement.setString(2,  String.valueOf(t.obtenerCostoTotal()));
+			statement.setString(3,  String.valueOf(t.obtenerTiempoTotal()));
+			statement.setString(4, String.valueOf(t.getCupo()));
+			statement.setString(5, String.valueOf(t.getTipo().getID()));
+			statement.execute();
+			return 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	@Override
 	public int update(Atraccion t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String query = "UPDATE atracciones SET nombre = ?, costo_visita = ?,tiempo_promedio = ?,cupo_diario = ?,tipo = ? where id = ?";
+		Connection conn;
+		try {
+			conn = ConnectionProvider.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query);
+
+			statement.setString(1,  String.valueOf(t.getNombre()));
+			statement.setString(2,  String.valueOf(t.obtenerCostoTotal()));
+			statement.setString(3,  String.valueOf(t.obtenerTiempoTotal()));
+			statement.setString(4, String.valueOf(t.getCupo()));
+			statement.setString(5, String.valueOf(t.getTipo().getID()));
+			statement.setString(6, String.valueOf(t.getID()));
+			statement.execute();
+			return 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	@Override

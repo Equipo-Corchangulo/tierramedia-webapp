@@ -15,4 +15,8 @@ public class PromocionService {
     public void delete(Integer id) {
 		DAOFactory.getPromocionDAO().delete(id);
     }
+
+    public Promocion find(int numericId) throws SQLException {
+        return DAOFactory.getPromocionDAO().find(numericId);
+    }
 }

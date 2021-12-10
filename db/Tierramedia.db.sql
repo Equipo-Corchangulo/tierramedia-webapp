@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS "tipo_de_atracciones";
 CREATE TABLE "tipo_de_atracciones" (
 	"id"	INTEGER,
 	"nombre_tipo"	TEXT NOT NULL,
+	active INTEGER DEFAULT 1,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 

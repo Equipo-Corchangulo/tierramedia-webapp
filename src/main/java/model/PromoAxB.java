@@ -8,8 +8,8 @@ public class PromoAxB extends Promocion {
 	public Facturable atraccionExtra;
 
 	public PromoAxB(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDePromocion
-			, String nombreDePromocion, Facturable atraccionExtra, boolean active, int id) {
-		super(listaDeAtracciones, tipoDePromocion, nombreDePromocion, active, enumDePromocion.AXB, id);
+			, String nombreDePromocion, Facturable atraccionExtra, boolean active, int id, String descripcion) {
+		super(listaDeAtracciones, tipoDePromocion, nombreDePromocion, active, enumDePromocion.AXB, id, descripcion);
 		this.atraccionExtra = atraccionExtra;
 	}
 	

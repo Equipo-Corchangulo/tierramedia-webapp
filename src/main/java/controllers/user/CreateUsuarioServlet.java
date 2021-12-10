@@ -29,9 +29,11 @@ public class CreateUsuarioServlet extends HttpServlet implements Servlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String viewState= "create";
 		req.setAttribute("selectedMenu", "usuario");
+		req.setAttribute("viewState",viewState);
 		getServletContext()
-			.getRequestDispatcher("/views/usuarios/create.jsp")
+			.getRequestDispatcher("/views/usuarios/form.jsp")
 			.forward(req, resp);
 	}
 	
@@ -59,7 +61,7 @@ public class CreateUsuarioServlet extends HttpServlet implements Servlet {
 			req.setAttribute("userInstance", user);
 
 			getServletContext()
-				.getRequestDispatcher("/views/usuarios/create.jsp")
+				.getRequestDispatcher("/views/usuarios/form.jsp")
 				.forward(req, resp);			
 		}
 	}

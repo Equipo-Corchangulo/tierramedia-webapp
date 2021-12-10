@@ -1,5 +1,7 @@
 package persistence.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import persistence.commons.DAOFactory;
 
 public class PromocionDAO implements IPromocionDAO {
 	private static IAtraccionDAO atraccionesDAO = DAOFactory.getAtraccionDAO();
+
 	public Promocion toPromocion(ResultSet result) throws SQLException {
 		TipoAtraccion tipoAtraccion =  DAOFactory.getTipoAtraccionDAO().find(result.getInt("tipo_atraccion"));
 		Promocion promo;
@@ -26,14 +29,17 @@ public class PromocionDAO implements IPromocionDAO {
 	    int id = result.getInt("id");
 		if(result.getDouble("porcentaje") >0 ) 
 		{
-			promo = new PromoPorcentual(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),result.getDouble("porcentaje"),active, id);
+			promo = new PromoPorcentual(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),
+					result.getDouble("porcentaje"),active, id, result.getString("descripcion"));
 		}
 		else if (result.getInt("atraccion_extra")!=0) {
 			Atraccion atraccionExtra = atraccionesDAO.find(result.getInt("atraccion_extra"));
-			promo = new PromoAxB(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),atraccionExtra,active, id);
+			promo = new PromoAxB(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),
+					atraccionExtra,active, id, result.getString("descripcion"));
 		}
 		else {
-			promo = new PromoAbsoluta(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),result.getDouble("costo_fijo"),active, id);
+			promo = new PromoAbsoluta(listaDeAtracciones, tipoAtraccion, result.getString("nombre"),
+					result.getDouble("costo_fijo"),active, id, result.getString("descripcion"));
 		}
 		return promo;
 	}
@@ -55,8 +61,17 @@ public class PromocionDAO implements IPromocionDAO {
 
 	@Override
 	public Promocion find(Integer id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		String query = "SELECT *, GROUP_CONCAT(lista_atracciones.atraccion_id,'-') AS atraccion_list "
+				+ "FROM promociones "
+				+ " LEFT JOIN atracciones_promocion AS lista_atracciones on lista_atracciones.promocion_id = promociones.id"
+				+ "  WHERE promociones.id = ? GROUP by lista_atracciones.promocion_id";
+
+		Connection conn = ConnectionProvider.getConnection();
+		PreparedStatement statement = conn.prepareStatement(query);
+		statement.setString(1, String.valueOf(id));
+
+		ResultSet resultados = statement.executeQuery();
+		return toPromocion(resultados);
 	}
 
 	@Override

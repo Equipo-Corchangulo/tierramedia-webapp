@@ -10,6 +10,11 @@ public class TipoAtraccion extends ActivableItem {
         this.name = name;
     }
 
+    public TipoAtraccion(String nombre) {
+        super(true);
+        this.name = nombre;
+    }
+
     public int getID() {
         return ID;
     }

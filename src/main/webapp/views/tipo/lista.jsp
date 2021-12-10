@@ -24,7 +24,7 @@
    <jsp:include page="/partials/nav.jsp"></jsp:include>
 
     <div class="row pt-3 d-inline-flex justify-content-center">
-        <a type="button" href="create.adm" class="btn btn-success d-inline-flex justify-content-center">
+        <a type="button" href="modelchange.adm" class="btn btn-success d-inline-flex justify-content-center">
             <i class="material-icons">add</i> Nuevo tipo de Atraccion</a>
     </div>
 
@@ -46,7 +46,7 @@
 		                        <td><c:out value="${ tipo.getName() }"></c:out></td>
 		                        <td>
 		                            <div class="row justify-content-between">
-		                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="edit.adm?id=${ tipo.getID() }">
+		                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="modelchange.adm?id=${ tipo.getID() }">
 		                                    <i class="material-icons">edit</i></a>
 		                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ tipo.getID() }">
 		                                    <i class="material-icons">delete</i></a>

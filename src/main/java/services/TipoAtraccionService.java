@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TipoAtraccionService {
 
-    public TipoAtraccion getByName(String name) throws Exception {
+    public TipoAtraccion getByName(String name) throws SQLException {
         return DAOFactory.getTipoAtraccionDAO().findByname(name);
     }
 
@@ -17,5 +17,17 @@ public class TipoAtraccionService {
     }
     public void delete(int id ) {
         DAOFactory.getTipoAtraccionDAO().delete(id);
+    }
+
+    public TipoAtraccion find(int id) throws SQLException {
+        return DAOFactory.getTipoAtraccionDAO().find(id);
+    }
+
+    public void create(TipoAtraccion tipoAtraccion) {
+        DAOFactory.getTipoAtraccionDAO().insert(tipoAtraccion);
+    }
+
+    public void update(TipoAtraccion tipoAtraccion){
+        DAOFactory.getTipoAtraccionDAO().update(tipoAtraccion);
     }
 }

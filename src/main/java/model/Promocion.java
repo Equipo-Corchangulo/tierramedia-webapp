@@ -1,5 +1,6 @@
 package model;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,18 +12,30 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 	}
 
 	public String nombreDePromocion;
+	public String descripcion;
 	public List<Facturable> listaDeAtracciones;
 	public TipoAtraccion tipoDeAtraccion;
 	public enumDePromocion tipo;
 	public int ID;
 
-	public Promocion(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDeAtraccion, String nombreDePromocion, boolean active, enumDePromocion tipo, int ID) {
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Promocion(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDeAtraccion,
+					 String nombreDePromocion, boolean active, enumDePromocion tipo, int ID,
+					 String descripcion) {
 		super(active);
 		this.listaDeAtracciones = listaDeAtracciones;
 		this.tipoDeAtraccion = tipoDeAtraccion;
 		this.nombreDePromocion = nombreDePromocion;
 		this.tipo = tipo;
 		this.ID = ID;
+		this.descripcion = descripcion;
 	}
 	
 	public int getID() {

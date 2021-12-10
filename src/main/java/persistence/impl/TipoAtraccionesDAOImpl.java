@@ -39,14 +39,33 @@ public class TipoAtraccionesDAOImpl implements ITipoAtraccionDAO {
 
 	@Override
 	public int insert(TipoAtraccion t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String query = "Insert into tipo_de_atracciones(nombre_tipo) values(?)";
+		try {
+			Connection conn = ConnectionProvider.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query);
+			statement.setString(1, t.getName());
+			statement.execute();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	@Override
 	public int update(TipoAtraccion t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String query = "UPDATE tipo_de_atracciones SET nombre_tipo = ? WHERE id = ?";
+		try {
+			Connection conn = ConnectionProvider.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query);
+			statement.setString(1, t.getName());
+			statement.setString(2, String.valueOf(t.getID()));
+			statement.execute();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
 	@Override
@@ -63,7 +82,7 @@ public class TipoAtraccionesDAOImpl implements ITipoAtraccionDAO {
 	}
 
 	@Override
-	public TipoAtraccion findByname(String name) throws Exception {
+	public TipoAtraccion findByname(String name) throws SQLException {
 		String query="SELECT * FROM tipo_de_atracciones WHERE nombre_tipo = ?";
 		Connection conn = ConnectionProvider.getConnection();
 		PreparedStatement statement = conn.prepareStatement(query);

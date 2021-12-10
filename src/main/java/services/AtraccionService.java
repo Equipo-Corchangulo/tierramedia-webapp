@@ -28,8 +28,8 @@ public class AtraccionService {
 		return user;
 	}
 	
-	public PerfilUsuario find(Integer id) throws SQLException {
-		return DAOFactory.getUsuarioDAO().find(id);
+	public Atraccion find(Integer id) throws SQLException {
+		return DAOFactory.getAtraccionDAO().find(id);
 	}
 	
 	public PerfilUsuario create( String nombre, String username, String password, Double money, int tiempo, boolean isAdmin, TipoAtraccion tipo, boolean active) {
@@ -43,5 +43,13 @@ public class AtraccionService {
 
 	public void delete(int id){
 		DAOFactory.getAtraccionDAO().delete(id);
+	}
+
+	public void create(Atraccion atraccion) throws SQLException {
+		DAOFactory.getAtraccionDAO().insert(atraccion);
+	}
+
+	public void update(Atraccion atraccion) throws SQLException {
+		DAOFactory.getAtraccionDAO().update(atraccion);
 	}
 }

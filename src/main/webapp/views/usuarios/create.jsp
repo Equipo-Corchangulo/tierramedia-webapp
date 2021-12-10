@@ -58,7 +58,7 @@
 			                </datalist>
                         </div>
                         <div class="row pt-3 justify-content-around">
-                            <button class="col-md-4 btn btn-success" type="submit">Registrarte</button>
+                            <button class="col-md-4 btn btn-success" type="submit"><c:if test="${viewState.equals('create')}">Crear</c:if> <c:if  test="${!viewState.equals('create')}">editar</c:if></button>
                             <a class="col-md-4 btn btn-danger align-self-center" type="button" href="javascript:history.back()">Cancelar</a>
                         </div>
 
