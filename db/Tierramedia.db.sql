@@ -27,6 +27,7 @@ CREATE TABLE "atracciones" (
 CREATE TABLE "promociones" (
 	"id"	INTEGER,
 	"nombre"	TEXT NOT NULL,
+	"descripcion" TEXT DEFAULT "-",
     "tipo_atraccion" INTEGER Not Null,
     "costo_fijo" Integer ,
     "atraccion_extra" INTEGER ,
