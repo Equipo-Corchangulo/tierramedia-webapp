@@ -1,0 +1,24 @@
+HISTORIAS DE USUARIO Y CRITERIOS DE ACEPTACIÓN
+
+Historia de usuario administrador: 
+Como usuario administrador quiero navegar en las funcionalidades de Atracciones, Tipos de atraccion, Promociones y Usuarios para poder modificarlos.
+
+Criterios de aceptación:
+-Loguearme como administrador
+-Dar de alta Atracciones, Tipos de atraccion, Promociones y Usuarios.
+-Dar de baja Atracciones, Tipos de atraccion, Promociones y Usuarios.
+-Ver el listado de Atracciones, Tipos de atraccion, Promociones y Usuarios.
+-Editar Atracciones, Tipos de atraccion, Promociones y Usuarios.
+
+-
+
+Historia de usuario no administrador: 
+Como usuario quiero ver Promociones y Atracciones, conocer su detalle para elegir una o más de una y realizar una compra.
+
+Criterios de aceptación:
+-Ver Promociones según mis criterios.
+-Ver Atracciones según mis criterios.
+-Elegir una Promocion y/o Atracción y ver su detalle.
+-Comprar una Promocion y/o Atracción. 
+-Ver mi Itinerario actualizado.
+
