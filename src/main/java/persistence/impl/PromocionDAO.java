@@ -13,6 +13,8 @@ import persistence.IPromocionDAO;
 import persistence.commons.ConnectionProvider;
 import persistence.commons.DAOFactory;
 
+import javax.xml.crypto.dsig.CanonicalizationMethod;
+
 public class PromocionDAO implements IPromocionDAO {
 	private static IAtraccionDAO atraccionesDAO = DAOFactory.getAtraccionDAO();
 
@@ -76,8 +78,65 @@ public class PromocionDAO implements IPromocionDAO {
 
 	@Override
 	public int insert(Promocion t) {
-		// TODO Auto-generated method stub
-		return 0;
+		String query = "";
+		String lastIDQuery = "select last_insert_rowid() as lastId";
+		String atraccionesQuery = "INSERT INTO atracciones_promocion(promocion_id,atraccion_id) values( ?,?)";
+
+		Connection conn;
+		try {
+			conn = ConnectionProvider.getConnection();
+			boolean hasExtra = false;
+			PreparedStatement statement = null ;
+
+			String extraColumn ="";
+			switch(t.getTipoPromo()){
+				case ABSOLUTA:
+					query = "INSERT INTO promociones(descripcion,nombre,tipo_atraccion,costo_fijo)values(?,?,?,?)";
+					statement = conn.prepareStatement(query);
+					statement.setString(4,String.valueOf(t.obtenerCostoTotal()));
+					break;
+				case PORCENTUAL:
+					query = "INSERT INTO promociones(descripcion,nombre,tipo_atraccion,porcentaje)values(?,?,?,?)";
+					statement = conn.prepareStatement(query);
+					statement.setString(4,String.valueOf(((PromoPorcentual)t).getPorcentajeDescuento()));
+					break;
+				case AXB:
+					query = "INSERT INTO promociones(descripcion,nombre,tipo_atraccion,atraccion_extra)values(?,?,?,?)";
+					statement = conn.prepareStatement(query);
+					hasExtra = true;
+					statement.setString(4,String.valueOf(
+							((Atraccion)((PromoAxB)t).getAtraccionExtra()).getID()
+					));
+					break;
+			}
+			statement.setString(1,t.getDescripcion());
+			statement.setString(2,t.getNombreDePromocion());
+			statement.setString(3,String.valueOf(t.getTipo().getID()));
+			statement.execute();
+			PreparedStatement lastIdSatatement = conn.prepareStatement(lastIDQuery);
+			ResultSet res = lastIdSatatement.executeQuery();
+			int lastId = res.getInt("lastId");
+			boolean finalHasExtra = hasExtra;
+			t.getListaDeAtracciones().stream().forEach(atraccion->{
+				if(!(finalHasExtra && atraccion == ((PromoAxB)t).getAtraccionExtra()) ){
+					PreparedStatement atraccionStatement = null;
+					try {
+						atraccionStatement = conn.prepareStatement(atraccionesQuery);
+						atraccionStatement.setString(1,String.valueOf(lastId));
+						atraccionStatement.setString(2,String.valueOf(((Atraccion)atraccion).getID()));
+						atraccionStatement.execute();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+
+				}
+			});
+			return 0;
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	@Override

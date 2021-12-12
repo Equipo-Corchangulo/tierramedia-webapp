@@ -26,6 +26,15 @@
                             method="post"
                        >
                           <div class="form-floating pt-2">
+                                 <input name="tipoPromo"  class="form-control" list="tipoPromoOptions" id="tipoPromo" <c:if test = "${promocion != null}">value = "${promocion.getTipoPromo()}"</c:if>  placeholder="Type to search...">
+                                 <label for="tipoPromo">Tipo de Promoción</label>
+                                 <datalist id="tipoPromoOptions">
+                                      <option value="AXB">
+                                      <option value="PORCENTUAL">
+                                      <option value="ABSOLUTA">
+                                 </datalist>
+                          </div>
+                          <div class="form-floating pt-2">
                               <input name="nombre" type="text" class="form-control" id="nombre" placeholder="name@example.com" <c:if test = "${promocion != null}">value = "${promocion.getNombreDePromocion()}"</c:if> >
                               <label for="nombre">Nombre de promoción</label>
                           </div>
@@ -34,16 +43,18 @@
                               <label for="descripcion">Descripción</label>
                           </div>
                           <div class="form-floating pt-2">
-                              <select name="lista" class="form-select" id="lista" aria-label="Open this select menu">
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </select>
+                          <input name="atraccioneslist" id="hiddenlist" type="TEXT" hidden placeholder="Escribe nombres de atracciones">
+                          <select id="lista" name="atracciones" multiple  data-show-all-suggestions class="form-control form-select"  aria-label="Disabled select example">
+                             <c:forEach items="${atraccionList}" var="atraccion">
+                                <option value="${atraccion.getID()}" <c:if test="${promocion.seEncuentraEnElFacturable(atraccion)}"> selected </c:if>> ${atraccion.getNombre()} </option>
+                            </c:forEach>
+                          </select>
+                          <div class="invalid-feedback">Porfavor Selecciona una atraccion valida</div>
                               <label for="lista">Lista de atracciones</label>
                           </div>
 
                           <div class="form-floating pt-2">
-                               <input class="form-control" list="datalistOptions" id="tipo" <c:if test = "${promocion != null}">value = "${promocion.getTipoDeAtraccion().getName()}"</c:if>  placeholder="Type to search...">
+                               <input name="tipo"  class="form-control" list="datalistOptions" id="tipo" <c:if test = "${promocion != null}">value = "${promocion.getTipoDeAtraccion().getName()}"</c:if>  placeholder="Type to search...">
                                <label for="tipo">Tipo de atracción</label>
                                <datalist id="datalistOptions">
                                <c:forEach items="${tipoAtraccionList}" var="tipoAtraccion">
@@ -51,6 +62,24 @@
                                </c:forEach>
                                </datalist>
                           </div>
+                          <div class="form-floating pt-2" id="porcentaje">
+                            <input name="porcentaje" type="text" class="form-control" id="porcentajein"<c:if test = "${promocion != null && promocion.getTipoPromo()== 'PORCENTUAL'}">value = "${promocion.getPorcentajeDescuento()}"</c:if> >
+                            <label for="porcentajein">Porcentaje de descuento</label>
+                          </div>
+                          <div class="form-floating pt-2" id="costoFinal">
+                            <input name="costoFinal" type="text" class="form-control" id="nombre" placeholder="name@example.com" <c:if test = "${promocion != null && promocion.getTipoPromo()== 'ABSOLUTA'}">value = "${promocion.obtenerCostoTotal()}"</c:if> >
+                            <label for="nombre">Costo Final</label>
+                          </div>
+                          <div class="form-floating pt-2" id="extra">
+                            <select id="extrain" name="extra" class="form-control form-select" aria-label="Disabled select example" <c:if test = "${promocion != null && promocion.getTipoPromo()== 'AXB'}">value = "${promocion.getAtraccionExtra().getID()}"</c:if>>
+                               <c:forEach items="${atraccionList}" var="atraccion">
+                                  <option value="${atraccion.getID()}" <c:if test ="${promocion != null && promocion.getTipoPromo()== 'AXB' && promocion.getAtraccionExtra().getID() == atraccion.getID()}"> selected </c:if> > ${atraccion.getNombre()} </option>
+                              </c:forEach>
+                            </select>
+
+                            <label for="extrain">Atraccion Extra</label>
+                          </div>
+
                           <div class="row pt-3 justify-content-around">
                               <button class="col-md-4 btn btn-success " type="submit"><c:if test="${viewState.equals('create')}">Crear</c:if> <c:if  test="${!viewState.equals('create')}">editar</c:if> promoción</button>
                               <a class="col-md-4 btn btn-danger align-self-center" role="button" href="javascript:history.back()">Cancelar</a>
@@ -61,6 +90,7 @@
 
            </div>
        </div>
+       <jsp:include page="/partials/promocionscript.jsp"></jsp:include>
 </body>
 
 </html>

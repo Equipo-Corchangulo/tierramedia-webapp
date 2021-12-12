@@ -8,7 +8,8 @@ public class PromoAbsoluta extends Promocion {
 
 	public PromoAbsoluta(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDePromocion,
 						 String nombreDePromocion, double costoFijo, boolean active, int id, String descripcion) {
-		super(listaDeAtracciones, tipoDePromocion, nombreDePromocion, active, enumDePromocion.ABSOLUTA, id, descripcion);
+		super(listaDeAtracciones, tipoDePromocion, nombreDePromocion, active, enumDePromocion.ABSOLUTA, id, descripcion,
+				enumDePromocion.ABSOLUTA);
 		this.costoFijo = costoFijo;
 	}
 

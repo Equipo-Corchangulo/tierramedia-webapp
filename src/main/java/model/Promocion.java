@@ -5,18 +5,31 @@ import java.sql.SQLException;
 import java.util.List;
 
 public abstract class Promocion extends ActivableItem  implements Facturable {
+
 	public enum enumDePromocion {
 		ABSOLUTA,
 		AXB,
 		PORCENTUAL;
 	}
 
-	public String nombreDePromocion;
-	public String descripcion;
-	public List<Facturable> listaDeAtracciones;
-	public TipoAtraccion tipoDeAtraccion;
-	public enumDePromocion tipo;
-	public int ID;
+	private String nombreDePromocion;
+	private String descripcion;
+	private enumDePromocion promoType;
+	private List<Facturable> listaDeAtracciones;
+
+	private TipoAtraccion tipoDeAtraccion;
+	private enumDePromocion tipo;
+
+	public enumDePromocion getPromoType() {
+		return promoType;
+	}
+
+	public void setPromoType(enumDePromocion promoType) {
+		this.promoType = promoType;
+	}
+
+	private int ID;
+
 
 	public String getDescripcion() {
 		return descripcion;
@@ -28,7 +41,7 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 
 	public Promocion(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDeAtraccion,
 					 String nombreDePromocion, boolean active, enumDePromocion tipo, int ID,
-					 String descripcion) {
+					 String descripcion, enumDePromocion promoType) {
 		super(active);
 		this.listaDeAtracciones = listaDeAtracciones;
 		this.tipoDeAtraccion = tipoDeAtraccion;
@@ -36,6 +49,7 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 		this.tipo = tipo;
 		this.ID = ID;
 		this.descripcion = descripcion;
+		this.promoType = promoType;
 	}
 	
 	public int getID() {

@@ -19,4 +19,11 @@ public class PromocionService {
     public Promocion find(int numericId) throws SQLException {
         return DAOFactory.getPromocionDAO().find(numericId);
     }
+
+    public void create(Promocion promocion) {
+        DAOFactory.getPromocionDAO().insert(promocion);
+    }
+    public void update(Promocion promocion){
+        DAOFactory.getPromocionDAO().update(promocion);
+    }
 }

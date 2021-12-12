@@ -9,15 +9,24 @@ public class PromoAxB extends Promocion {
 
 	public PromoAxB(List<Facturable> listaDeAtracciones, TipoAtraccion tipoDePromocion
 			, String nombreDePromocion, Facturable atraccionExtra, boolean active, int id, String descripcion) {
-		super(listaDeAtracciones, tipoDePromocion, nombreDePromocion, active, enumDePromocion.AXB, id, descripcion);
+		super(listaDeAtracciones, tipoDePromocion, nombreDePromocion, active, enumDePromocion.AXB, id, descripcion,
+				enumDePromocion.AXB);
 		this.atraccionExtra = atraccionExtra;
 	}
 	
 	@Override
 	public List<Facturable> getListaDeAtracciones() {
-		List<Facturable> atracciones = this.listaDeAtracciones;
+		List<Facturable> atracciones = super.getListaDeAtracciones();
 		atracciones.add(atraccionExtra);
 		return atracciones;
+	}
+
+	public Facturable getAtraccionExtra() {
+		return atraccionExtra;
+	}
+
+	public void setAtraccionExtra(Facturable atraccionExtra) {
+		this.atraccionExtra = atraccionExtra;
 	}
 
 	@Override
