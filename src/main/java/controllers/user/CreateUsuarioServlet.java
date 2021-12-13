@@ -33,7 +33,7 @@ public class CreateUsuarioServlet extends HttpServlet implements Servlet {
 		req.setAttribute("selectedMenu", "usuario");
 		req.setAttribute("viewState",viewState);
 		getServletContext()
-			.getRequestDispatcher("/views/usuarios/form.jsp")
+			.getRequestDispatcher("/views/usuarios/create.jsp")
 			.forward(req, resp);
 	}
 	
