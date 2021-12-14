@@ -29,40 +29,50 @@ public class CreateUsuarioServlet extends HttpServlet implements Servlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String viewState= "create";
-		req.setAttribute("selectedMenu", "usuario");
-		req.setAttribute("viewState",viewState);
-		getServletContext()
-			.getRequestDispatcher("/views/usuarios/create.jsp")
-			.forward(req, resp);
+		PerfilUsuario user = (PerfilUsuario) req.getSession().getAttribute("user");
+		if (user != null && user.isAdmin()) {
+			String viewState = "create";
+			req.setAttribute("selectedMenu", "usuario");
+			req.setAttribute("viewState", viewState);
+			getServletContext()
+					.getRequestDispatcher("/views/usuarios/create.jsp")
+					.forward(req, resp);
+		} else {
+			resp.sendRedirect("/tierramedia/welcome");
+		}
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
-		String nombre = req.getParameter("nombre");
-		Double money = Double.parseDouble(req.getParameter("money"));
-		int tiempo = Integer.parseInt(req.getParameter("tiempo"));
-		boolean isAdmin = req.getParameter("usertype").equals("Admin");
-		TipoAtraccion tipo = null;
-		try {
-			tipo = tipoAtraccionService.getByName(req.getParameter("tipo").toUpperCase());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
+		if (logedUser != null && logedUser.isAdmin()) {
+			String username = req.getParameter("username");
+			String password = req.getParameter("password");
+			String nombre = req.getParameter("nombre");
+			Double money = Double.parseDouble(req.getParameter("money"));
+			int tiempo = Integer.parseInt(req.getParameter("tiempo"));
+			boolean isAdmin = req.getParameter("usertype").equals("Admin");
+			TipoAtraccion tipo = null;
+			try {
+				tipo = tipoAtraccionService.getByName(req.getParameter("tipo").toUpperCase());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-		PerfilUsuario user = usuarioService.create(nombre, username, password, money, tiempo, isAdmin, tipo, true);
-		
-		if(user.isValid()) {
-			resp.sendRedirect("lista.adm");
+			PerfilUsuario user = usuarioService.create(nombre, username, password, money, tiempo, isAdmin, tipo, true);
+
+			if (user.isValid()) {
+				resp.sendRedirect("lista.adm");
+			} else {
+				req.setAttribute("errors", user.validate());
+				req.setAttribute("userInstance", user);
+
+				getServletContext()
+						.getRequestDispatcher("/views/usuarios/form.jsp")
+						.forward(req, resp);
+			}
 		} else {
-			req.setAttribute("errors", user.validate());
-			req.setAttribute("userInstance", user);
-
-			getServletContext()
-				.getRequestDispatcher("/views/usuarios/form.jsp")
-				.forward(req, resp);			
+			resp.sendRedirect("/tierramedia/welcome");
 		}
 	}
 }

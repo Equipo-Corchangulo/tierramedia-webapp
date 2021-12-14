@@ -1,5 +1,10 @@
 <html>
+<head></head>
 <body>
-<h2>Hello World!</h2>
+<script type="text/javascript">
+    window.onload = ()=>{
+     window.location.replace("/tierramedia/welcome");
+    }
+    </script>
 </body>
 </html>

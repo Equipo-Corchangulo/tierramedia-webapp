@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.PerfilUsuario;
 import services.UsuarioService;
 
 @WebServlet("/usuario/lista.adm")
@@ -24,6 +25,8 @@ public class UserListServlet extends HttpServlet implements Servlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		PerfilUsuario user = (PerfilUsuario) req.getSession().getAttribute("user");
+		if (user != null && user.isAdmin()) {
 		try {
 			req.setAttribute("userList", usuarioService.list());
 			req.setAttribute("selectedMenu", "usuario");
@@ -34,5 +37,9 @@ public class UserListServlet extends HttpServlet implements Servlet {
 		getServletContext()
 			.getRequestDispatcher("/views/usuarios/listaUsuarios.jsp")
 			.forward(req, resp);
+		} else
+		{
+			resp.sendRedirect("/tierramedia/welcome");
+		}
 	}
 }

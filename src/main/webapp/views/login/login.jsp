@@ -5,7 +5,7 @@
 <head>
 
   <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/css/loginstyles.css" rel="stylesheet">
+  <link href="assets/css/login.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>Iniciar Sesion Agencia de Viajes</title>
 </head>

@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.PerfilUsuario;
 import services.AtraccionService;
 
 @WebServlet("/atracciones/lista.adm")
@@ -23,16 +24,21 @@ public class AtraccionesListServlet extends HttpServlet implements Servlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
+		PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
+		if (logedUser != null && logedUser.isAdmin()) {
+			try {
 				req.setAttribute("atraccionList", atraccionService.list());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			req.setAttribute("selectedMenu", "atracciones");
-		getServletContext()
-			.getRequestDispatcher("/views/atracciones/lista.jsp")
-			.forward(req, resp);
+			getServletContext()
+					.getRequestDispatcher("/views/atracciones/lista.jsp")
+					.forward(req, resp);
+		} else {
+			resp.sendRedirect("/tierramedia/welcome");
+		}
 	}
 
 }

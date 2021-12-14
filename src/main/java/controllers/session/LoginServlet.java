@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet implements Servlet {
 		if (user != null) {
 			// Seteamos en la sesion el usuario y preparamos el destino
 			req.getSession().setAttribute("user", user);
-			resp.sendRedirect("index.jsp");
+			resp.sendRedirect("/tierramedia/welcome");
 
 		} else {
 			// Seteamos en request el mensaje y preparamos el destino

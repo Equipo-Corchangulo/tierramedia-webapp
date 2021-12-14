@@ -23,6 +23,9 @@
 				    <a class="nav-link <c:if test="${ selectedMenu.equals('tipo') }"> active </c:if>" href="/tierramedia/tipos/lista.adm">Tipos de Atraccion</a>
 				</li>
 			</ul>
+			<div class="d-flex">
+                <a class="btn btn-secondary my-2 my-sm-0" href="/tierramedia/logout">Cerrar Sesion</a>
+            </div>
 		</div>
 	</div>
 </nav>

@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.PerfilUsuario;
 import services.PromocionService;
 import services.TipoAtraccionService;
 
@@ -23,8 +24,13 @@ public class PromocionesDeleteServlet extends HttpServlet implements Servlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.parseInt(req.getParameter("id"));
-        promocionService.delete(id);
-        resp.sendRedirect("/tierramedia/promociones/lista.adm");
+        PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
+        if (logedUser != null && logedUser.isAdmin()) {
+            Integer id = Integer.parseInt(req.getParameter("id"));
+            promocionService.delete(id);
+            resp.sendRedirect("/tierramedia/promociones/lista.adm");
+        } else {
+            resp.sendRedirect("/tierramedia/welcome");
+        }
     }
 }

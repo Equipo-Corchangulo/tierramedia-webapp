@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.PerfilUsuario;
 import services.PromocionService;
 import services.TipoAtraccionService;
 
@@ -24,15 +25,20 @@ public class TipoAtraccionesListServlet extends HttpServlet implements Servlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            req.setAttribute("tiposList", tipoAtraccionService.list());
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
+        if (logedUser != null && logedUser.isAdmin()) {
+            try {
+                req.setAttribute("tiposList", tipoAtraccionService.list());
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            req.setAttribute("selectedMenu", "tipo");
+            getServletContext()
+                    .getRequestDispatcher("/views/tipo/lista.jsp")
+                    .forward(req, resp);
+        } else {
+            resp.sendRedirect("/tierramedia/welcome");
         }
-        req.setAttribute("selectedMenu", "tipo");
-        getServletContext()
-                .getRequestDispatcher("/views/tipo/lista.jsp")
-                .forward(req, resp);
     }
 }

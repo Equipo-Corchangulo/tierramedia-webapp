@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Atraccion;
+import model.PerfilUsuario;
 import model.Promocion;
 import model.TipoAtraccion;
 import services.AtraccionService;
@@ -29,56 +30,59 @@ public class AtraccionesDinamicServlet extends HttpServlet implements Servlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String viewState ="create";
-        String id = req.getParameter("id");
-        try {
-            List<TipoAtraccion> tipoAtraccionList = tipoAtraccionService.list();
-            req.setAttribute("tipoAtraccionList",tipoAtraccionList);
-            if(id != null){
-                viewState = "update";
-                int numericId = Integer.parseInt(id);
+        PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
+        if (logedUser != null && logedUser.isAdmin()) {
+            String viewState = "create";
+            String id = req.getParameter("id");
+            try {
+                List<TipoAtraccion> tipoAtraccionList = tipoAtraccionService.list();
+                req.setAttribute("tipoAtraccionList", tipoAtraccionList);
+                if (id != null) {
+                    viewState = "update";
+                    int numericId = Integer.parseInt(id);
 
-                Atraccion atraccion = atraccionService.find(numericId);
-                req.setAttribute("atraccion", atraccion);
+                    Atraccion atraccion = atraccionService.find(numericId);
+                    req.setAttribute("atraccion", atraccion);
 
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+            req.setAttribute("viewState", viewState);
+            req.setAttribute("selectedMenu", "atracciones");
+            getServletContext()
+                    .getRequestDispatcher("/views/atracciones/form.jsp")
+                    .forward(req, resp);
+        } else {
+            resp.sendRedirect("/tierramedia/welcome");
         }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
-        req.setAttribute("viewState", viewState);
-        req.setAttribute("selectedMenu", "atracciones");
-        getServletContext()
-                .getRequestDispatcher("/views/atracciones/form.jsp")
-                .forward(req, resp);;
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String id = req.getParameter("id");
-        String nombre = req.getParameter("nombre");
-        String costo = req.getParameter("costo");
-        String tiempo = req.getParameter("tiempo");
-        String tipo = req.getParameter("tipo");
-        String cupo = req.getParameter("cupo");
-        try{
-            TipoAtraccion tipoAtraccion = tipoAtraccionService.getByName(tipo);
-            int numericId = id==null?-1: Integer.parseInt(id);
-            Atraccion atraccion = new Atraccion(nombre, Double.parseDouble(costo),Double.parseDouble(tiempo),Integer.parseInt(cupo),tipoAtraccion, numericId, true);
-            if (atraccion.getID()!=-1){
-                atraccionService.update(atraccion);
-            }else {
-                atraccionService.create(atraccion);
+        PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
+        if (logedUser != null && logedUser.isAdmin()) {
+            String id = req.getParameter("id");
+            String nombre = req.getParameter("nombre");
+            String costo = req.getParameter("costo");
+            String tiempo = req.getParameter("tiempo");
+            String tipo = req.getParameter("tipo");
+            String cupo = req.getParameter("cupo");
+            try {
+                TipoAtraccion tipoAtraccion = tipoAtraccionService.getByName(tipo);
+                int numericId = id == null ? -1 : Integer.parseInt(id);
+                Atraccion atraccion = new Atraccion(nombre, Double.parseDouble(costo), Double.parseDouble(tiempo), Integer.parseInt(cupo), tipoAtraccion, numericId, true);
+                if (atraccion.getID() != -1) {
+                    atraccionService.update(atraccion);
+                } else {
+                    atraccionService.create(atraccion);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+            resp.sendRedirect("lista.adm");
+        } else {
+            resp.sendRedirect("/tierramedia/welcome");
         }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
-
-
-
-
-
-        resp.sendRedirect("lista.adm");
     }
 }
