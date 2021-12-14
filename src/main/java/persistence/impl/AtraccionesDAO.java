@@ -20,10 +20,11 @@ public class AtraccionesDAO implements IAtraccionDAO {
 
     public Atraccion toAtraccion(ResultSet result) throws SQLException {
 		TipoAtraccion tipoAtraccion =  DAOFactory.getTipoAtraccionDAO().find(result.getInt("tipo"));
-
-        return new Atraccion(result.getString("nombre"), result.getDouble("costo_visita"),
-                result.getDouble("tiempo_promedio"), result.getInt("cupo_diario"),
+		Atraccion atraccion = new Atraccion(result.getString("nombre"), result.getDouble("costo_visita"),
+				result.getDouble("tiempo_promedio"), result.getInt("cupo_diario"),
 				tipoAtraccion, result.getInt("id"), result.getInt("active") == 1);
+		atraccion.setImageDir(result.getString("imagedir"));
+        return  atraccion;
     }
 
     public List<Atraccion> findAll() throws SQLException {
@@ -57,7 +58,7 @@ public class AtraccionesDAO implements IAtraccionDAO {
 
 	@Override
 	public int insert(Atraccion t) {
-		String query = "INSERT into atracciones(nombre, costo_visita,tiempo_promedio,cupo_diario,tipo) VALUES (?,?,?,?,?)";
+		String query = "INSERT into atracciones(nombre, costo_visita,tiempo_promedio,cupo_diario,tipo, imagedir) VALUES (?,?,?,?,?,?)";
 		Connection conn;
 		try {
 			conn = ConnectionProvider.getConnection();
@@ -68,6 +69,8 @@ public class AtraccionesDAO implements IAtraccionDAO {
 			statement.setString(3,  String.valueOf(t.obtenerTiempoTotal()));
 			statement.setString(4, String.valueOf(t.getCupo()));
 			statement.setString(5, String.valueOf(t.getTipo().getID()));
+			statement.setString(6, t.getImageDir());
+
 			statement.execute();
 			return 0;
 		} catch (SQLException e) {
@@ -79,18 +82,19 @@ public class AtraccionesDAO implements IAtraccionDAO {
 
 	@Override
 	public int update(Atraccion t) {
-		String query = "UPDATE atracciones SET nombre = ?, costo_visita = ?,tiempo_promedio = ?,cupo_diario = ?,tipo = ? where id = ?";
+		String query = "UPDATE atracciones SET nombre = ?, costo_visita = ?,tiempo_promedio = ?,cupo_diario = ?,tipo = ?, imagedir =? where id = ?";
 		Connection conn;
 		try {
 			conn = ConnectionProvider.getConnection();
 			PreparedStatement statement = conn.prepareStatement(query);
 
-			statement.setString(1,  String.valueOf(t.getNombre()));
-			statement.setString(2,  String.valueOf(t.obtenerCostoTotal()));
-			statement.setString(3,  String.valueOf(t.obtenerTiempoTotal()));
+			statement.setString(1, String.valueOf(t.getNombre()));
+			statement.setString(2, String.valueOf(t.obtenerCostoTotal()));
+			statement.setString(3, String.valueOf(t.obtenerTiempoTotal()));
 			statement.setString(4, String.valueOf(t.getCupo()));
 			statement.setString(5, String.valueOf(t.getTipo().getID()));
-			statement.setString(6, String.valueOf(t.getID()));
+			statement.setString(6, t.getImageDir());
+			statement.setString(7, String.valueOf(t.getID()));
 			statement.execute();
 			return 0;
 		} catch (SQLException e) {

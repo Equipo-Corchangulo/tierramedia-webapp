@@ -1,5 +1,6 @@
 package controllers.atracciones;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -14,6 +15,7 @@ import services.AtraccionService;
 
 @WebServlet("/atracciones/lista.adm")
 public class AtraccionesListServlet extends HttpServlet implements Servlet {
+	private static final String UPLOAD_DIRECTORY = "uploadfiles";
 	private AtraccionService atraccionService;
 	
 	@Override

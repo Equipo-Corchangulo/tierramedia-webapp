@@ -23,6 +23,7 @@
                    <div class="card-body">
                        <form
                            action="modelchange.adm${atraccion != null ? '?id=' : ''}${atraccion != null ? String.valueOf(atraccion.getID()) :''}"
+                           enctype="multipart/form-data"
                             method="post"
                        >
                         <div class="form-floating pt-2">
@@ -51,6 +52,10 @@
                             </c:forEach>
                             </datalist>
                         </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlFile1">Imagen De atraccion</label>
+                            <input type="file" name="file2" class="form-control-file" id="exampleFormControlFile1">
+                          </div>
                         <div class="row pt-3 justify-content-around">
                             <button class="col-md-4 btn btn-success" type="submit">
                                 <c:if test="${viewState.equals('create')}">Crear</c:if> <c:if  test="${!viewState.equals('create')}">editar</c:if> atracción</button>

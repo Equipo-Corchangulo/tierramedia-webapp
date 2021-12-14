@@ -13,6 +13,7 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	private String nombre;
 	private TipoAtraccion tipoAtraccion;
 	private int ID;
+	private String imageDir;
 
 	public Atraccion(String nombre, double costoVisita, double tiempoPromedio, int cupoDiario, TipoAtraccion tipoAtraccion, int ID, boolean active) {
 		super(active);
@@ -25,6 +26,14 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	}
 	public int getID(){
 		return  this.ID;
+	}
+
+	public String getImageDir() {
+		return imageDir;
+	}
+
+	public void setImageDir(String imageDir) {
+		this.imageDir = imageDir;
 	}
 
 	@Override

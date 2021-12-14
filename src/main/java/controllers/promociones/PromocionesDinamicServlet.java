@@ -99,7 +99,7 @@ public class PromocionesDinamicServlet extends HttpServlet implements Servlet {
                     case "AXB":
                         promocion = new PromoAxB(atraccionList, tipoAtraccion, nombre, atraccionExtra, true, ID, descriptcion);
                         break;
-                    case "porcentaje":
+                    case "PORCENTUAL":
                         promocion = new PromoPorcentual(atraccionList, tipoAtraccion, nombre, Double.parseDouble(porcentaje), true, ID, descriptcion);
                         break;
                     case "ABSOLUTA":

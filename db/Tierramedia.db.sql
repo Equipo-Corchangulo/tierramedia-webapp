@@ -20,6 +20,7 @@ CREATE TABLE "atracciones" (
     "tiempo_promedio" INTEGER,
     "cupo_diario" INTEGER,
 	"active" INTEGER DEFAULT 1,
+	"imagedir" TEXT DEFAULT "image.png",
 	FOREIGN KEY("tipo") REFERENCES "tipo_de_atracciones"("id"),
 	PRIMARY KEY("id" AUTOINCREMENT)
 );

@@ -34,6 +34,7 @@
                 <thead>
                     <tr class="table-light">
                          <th scope="col">Id</th>
+                            <th scope="col">Imagen</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Costo</th>
                             <th scope="col">Tiempo promedio</th>
@@ -47,6 +48,7 @@
 						<c:if test="${ atraccion.isActive() }">
 							<tr>
 		                        <th scope="row"><c:out value="${ atraccion.getID() }"></c:out></th>
+		                        <td><img class="col-md-6" src="/tierramedia/uploadfiles/${ atraccion.getImageDir() }" alt="Italian Trulli"></td>
 		                        <td><c:out value="${ atraccion.getNombre() }"></c:out></td>
 		                        <td><c:out value="${ atraccion.obtenerCostoTotal() }"></c:out></td>
 		                        <td><c:out value="${ atraccion.obtenerTiempoTotal() }"></c:out></td>

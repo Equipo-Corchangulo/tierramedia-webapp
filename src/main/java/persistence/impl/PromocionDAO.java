@@ -141,7 +141,48 @@ public class PromocionDAO implements IPromocionDAO {
 
 	@Override
 	public int update(Promocion t) {
-		// TODO Auto-generated method stub
+		String query = "UPDATE promociones SET nombre = ?, descripcion = ?, tipo_atraccion = ?, costo_fijo = ?, atraccion_extra = ?, porcentaje = ?  WHERE id = ?";
+
+		try {
+			Connection conn = ConnectionProvider.getConnection();
+			PreparedStatement statement = conn.prepareStatement(query);
+			statement.setString(1, t.getNombreDePromocion());
+			statement.setString(2, t.getDescripcion());
+			statement.setString(3,String.valueOf( t.getTipo().getID()));
+			switch (t.getTipoPromo()){
+				case ABSOLUTA:
+					statement.setString(4, String.valueOf(t.obtenerCostoTotal()));
+					break;
+				case AXB:
+					statement.setString(5, String.valueOf(((Atraccion)((PromoAxB)t).getAtraccionExtra()).getID()));
+					break;
+				case PORCENTUAL:
+					statement.setString(6, String.valueOf(((PromoPorcentual)t).getPorcentajeDescuento()));
+					break;
+			}
+			statement.setString(7, String.valueOf(t.getID()));
+			statement.execute();
+			String deleteAtrQuery = "DELETE FROM atracciones_promocion WHERE promocion_id = "+ t.getID();
+			statement = conn.prepareStatement(deleteAtrQuery);
+			statement.execute();
+			t.getListaDeAtracciones().stream().forEach(facturable -> {
+				Atraccion atr = (Atraccion) facturable;
+				if(!(t.getTipoPromo() == Promocion.enumDePromocion.AXB && !((PromoAxB)t).getAtraccionExtra().equals(atr)) ){
+					String atrQuery = "INSERT INTO atracciones_promocion (promocion_id, atraccion_id) values("+t.getID()+",?)";
+					try {
+						PreparedStatement atrStatement = conn.prepareStatement(atrQuery);
+						atrStatement.setString(1, String.valueOf(atr.getID()));
+						atrStatement.execute();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+
+				}
+			});
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}
 
