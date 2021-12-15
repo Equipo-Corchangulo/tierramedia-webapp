@@ -1,5 +1,7 @@
 package model;
 
+import java.util.HashMap;
+
 public class TipoAtraccion extends ActivableItem {
     private int ID;
     private String name;
@@ -30,4 +32,15 @@ public class TipoAtraccion extends ActivableItem {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public boolean isValid() {
+		return validate().isEmpty();
+	}
+	
+	public HashMap<String, String> validate(){
+		HashMap<String, String> errors = new HashMap<String, String>();
+		if(this.name.isBlank()) errors.put("nombre", "El nombre es requerido");
+		System.out.println(errors);
+		return errors;
+	}
 }

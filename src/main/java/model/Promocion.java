@@ -2,6 +2,7 @@ package model;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class Promocion extends ActivableItem  implements Facturable {
@@ -193,6 +194,18 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 			}
 		}
 		return false;
+	}
+	
+	public boolean isValid() {
+		return validate().isEmpty();
+	}
+	
+	public HashMap<String, String> validate(){
+		HashMap<String, String> errors = new HashMap<String, String>();
+		if(this.nombreDePromocion.isBlank()) errors.put("nombre de promcion", "El nombre es requerido");		
+		if(this.listaDeAtracciones.size() < 1) errors.put("lista de atracciones", "se debe agregar por lo menos 1 Atraccion");
+		System.out.println(errors);
+		return errors;
 	}
 	
 	

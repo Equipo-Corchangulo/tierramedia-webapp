@@ -21,9 +21,19 @@ public class PromocionService {
     }
 
     public void create(Promocion promocion) {
-        DAOFactory.getPromocionDAO().insert(promocion);
+        try {
+			DAOFactory.getPromocionDAO().insert(promocion);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     public void update(Promocion promocion){
-        DAOFactory.getPromocionDAO().update(promocion);
+        try {
+			DAOFactory.getPromocionDAO().update(promocion);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

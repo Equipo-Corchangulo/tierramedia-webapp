@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class PromoAbsoluta extends Promocion {
@@ -21,6 +22,15 @@ public class PromoAbsoluta extends Promocion {
 	@Override
 	public String toString() {
 		return super.toString() + " Todo al precio de: " + costoFijo + "\n";
+	}
+	
+	@Override
+	public HashMap<String, String> validate(){
+		HashMap<String, String> errors =super.validate();
+		if(this.costoFijo < 1) errors.put("Costo fijo", "el costo fijo debe ser mayor a 0");
+		System.out.println(errors);
+		
+		return errors;
 	}
 
 }

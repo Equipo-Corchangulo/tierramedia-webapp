@@ -84,7 +84,7 @@ public class AtraccionesDinamicServlet extends HttpServlet implements Servlet {
             for (Part part : req.getParts()) {
                 String fileName = getFileName(part);
                 String nombreTemp = nombre.replace(" ", "");
-                if(!fileName.equals("image.png")){
+                if(!fileName.equals("image.png") && !fileName.equals("")){
 
                     fileDir = nombreTemp+fileName;
                     part.write(uploadPath + File.separator + fileDir);
@@ -97,16 +97,30 @@ public class AtraccionesDinamicServlet extends HttpServlet implements Servlet {
                 Atraccion atraccion = new Atraccion(nombre, Double.parseDouble(costo), Double.parseDouble(tiempo), Integer.parseInt(cupo), tipoAtraccion, numericId, true);
                 if (!fileDir.isBlank()){
                     atraccion.setImageDir(fileDir);
-                }
-                if (atraccion.getID() != -1) {
-                    atraccionService.update(atraccion);
                 } else {
-                    atraccionService.create(atraccion);
+                	atraccion.setImageDir("image.png");
+                }
+                if(atraccion.isValid()) {
+	                if (atraccion.getID() != -1) {
+	                    atraccionService.update(atraccion);
+	                } else {
+	                    atraccionService.create(atraccion);
+	                }
+
+	                resp.sendRedirect("lista.adm");
+                } else {
+                	String viewState = atraccion.getID() != -1? "update":"create";
+    				req.setAttribute("errors", atraccion.validate());
+                	req.setAttribute("atraccion", atraccion);
+                	req.setAttribute("viewState", viewState);
+                    req.setAttribute("selectedMenu", "atracciones");
+                    getServletContext()
+                            .getRequestDispatcher("/views/atracciones/form.jsp")
+                            .forward(req, resp);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            resp.sendRedirect("lista.adm");
         } else {
             resp.sendRedirect("/tierramedia/welcome");
         }
@@ -117,6 +131,6 @@ public class AtraccionesDinamicServlet extends HttpServlet implements Servlet {
             if (content.trim().startsWith("filename"))
                 return content.substring(content.indexOf("=") + 2, content.length() - 1);
         }
-        return "img.png";
+        return "image.png";
     }
 }

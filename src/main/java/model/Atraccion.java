@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import persistence.impl.AtraccionesDAO;
 
@@ -100,7 +101,7 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	@Override
 	public boolean seEncuentraEnElFacturable(Facturable facturable) {
 		if(facturable.getClass() == Atraccion.class)
-			return this.equals(facturable);
+			return this.ID == ((Atraccion)facturable).ID;
 
 		return facturable.seEncuentraEnElFacturable(this);
 	}
@@ -148,6 +149,20 @@ public class Atraccion  extends ActivableItem implements Facturable {
 		if (tipoAtraccion != other.tipoAtraccion)
 			return false;
 		return true;
+	}
+	
+	public boolean isValid() {
+		return validate().isEmpty();
+	}
+	
+	public HashMap<String, String> validate(){
+		HashMap<String, String> errors = new HashMap<String, String>();
+		if(this.nombre.isBlank()) errors.put("nombre atraccion", "El nombre es requerido");		
+		if(this.costoVisita<1) errors.put("costo", "El valor debe ser mayor a 0");
+		if(this.tiempoPromedio<1) errors.put("tiempo promedio", "el tiempo debe ser mayor a 0");
+		if(this.cupoDiario<1) errors.put("cupo diario", "el cupo diario debe ser mayor a 0");
+		System.out.println(errors);
+		return errors;
 	}
 	 
 	

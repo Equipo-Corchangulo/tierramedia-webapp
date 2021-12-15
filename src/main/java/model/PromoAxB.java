@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public class PromoAxB extends Promocion {
@@ -58,5 +59,12 @@ public class PromoAxB extends Promocion {
 	public String toString() {
 		return super.toString() +" Atraccion de regalo: \n" + atraccionExtra;
 	}
-
+	@Override
+	public HashMap<String, String> validate(){
+		HashMap<String, String> errors =super.validate();
+		if(this.atraccionExtra == null) errors.put("Atraccion Extra", "Debe Seleccionar una atraccion Extra");
+		System.out.println(errors);
+		
+		return errors;
+	}
 }

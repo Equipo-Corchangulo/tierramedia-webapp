@@ -76,15 +76,16 @@ public class PromocionDAO implements IPromocionDAO {
 		return toPromocion(resultados);
 	}
 
+	@SuppressWarnings("finally")
 	@Override
-	public int insert(Promocion t) {
+	public int insert(Promocion t) throws SQLException {
 		String query = "";
 		String lastIDQuery = "select last_insert_rowid() as lastId";
 		String atraccionesQuery = "INSERT INTO atracciones_promocion(promocion_id,atraccion_id) values( ?,?)";
 
-		Connection conn;
+		Connection conn = ConnectionProvider.getConnection();
 		try {
-			conn = ConnectionProvider.getConnection();
+			conn.setAutoCommit(false);
 			boolean hasExtra = false;
 			PreparedStatement statement = null ;
 
@@ -131,20 +132,26 @@ public class PromocionDAO implements IPromocionDAO {
 
 				}
 			});
-			return 0;
 		}
 		catch (SQLException e){
+			conn.rollback();
 			e.printStackTrace();
 			return -1;
+		}
+		finally {
+			conn.commit();
+			return 0;
 		}
 	}
 
 	@Override
-	public int update(Promocion t) {
+	public int update(Promocion t) throws SQLException {
 		String query = "UPDATE promociones SET nombre = ?, descripcion = ?, tipo_atraccion = ?, costo_fijo = ?, atraccion_extra = ?, porcentaje = ?  WHERE id = ?";
 
+		Connection conn = ConnectionProvider.getConnection();
 		try {
-			Connection conn = ConnectionProvider.getConnection();
+
+			conn.setAutoCommit(false);
 			PreparedStatement statement = conn.prepareStatement(query);
 			statement.setString(1, t.getNombreDePromocion());
 			statement.setString(2, t.getDescripcion());
@@ -181,7 +188,11 @@ public class PromocionDAO implements IPromocionDAO {
 			});
 		}
 		catch (SQLException e) {
+			conn.rollback();
 			e.printStackTrace();
+		}
+		finally {
+			conn.commit();
 		}
 		return 0;
 	}

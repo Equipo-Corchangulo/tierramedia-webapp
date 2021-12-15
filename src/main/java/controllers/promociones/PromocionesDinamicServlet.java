@@ -83,13 +83,15 @@ public class PromocionesDinamicServlet extends HttpServlet implements Servlet {
                 if (id != null) {
                     ID = Integer.parseInt(id);
                 }
-                TipoAtraccion tipoAtraccion = tipoAtraccionService.getByName(TipoAtraccion);
-                Atraccion atraccionExtra = atraccionService.find(Integer.parseInt(extra));
+                TipoAtraccion tipoAtraccion = TipoAtraccion != null && !TipoAtraccion.isBlank()? tipoAtraccionService.getByName(TipoAtraccion) : null;
+                Atraccion atraccionExtra = extra != null && !extra.isBlank() ? atraccionService.find(Integer.parseInt(extra)): null;
                 String[] listaAtraccionesstr = lista.split(",");
                 List<Facturable> atraccionList = new ArrayList<Facturable>();
-                Arrays.stream(listaAtraccionesstr).sequential().forEach(atracionid -> {
+                Arrays.stream(listaAtraccionesstr).forEach(atracionid -> {
                     try {
-                        atraccionList.add(atraccionService.find(Integer.parseInt(atracionid)));
+                    	if(atracionid != null && !atracionid.isBlank()) {
+                    		atraccionList.add(atraccionService.find(Integer.parseInt(atracionid)));
+                    	}
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -100,25 +102,43 @@ public class PromocionesDinamicServlet extends HttpServlet implements Servlet {
                         promocion = new PromoAxB(atraccionList, tipoAtraccion, nombre, atraccionExtra, true, ID, descriptcion);
                         break;
                     case "PORCENTUAL":
-                        promocion = new PromoPorcentual(atraccionList, tipoAtraccion, nombre, Double.parseDouble(porcentaje), true, ID, descriptcion);
+                    	double porcentajeNumeric = porcentaje != null && !porcentaje.isBlank() ? Double.parseDouble(porcentaje) : 0;
+                        promocion = new PromoPorcentual(atraccionList, tipoAtraccion, nombre,porcentajeNumeric , true, ID, descriptcion);
                         break;
                     case "ABSOLUTA":
-                        promocion = new PromoAbsoluta(atraccionList, tipoAtraccion, nombre, Double.parseDouble(costoFinal), true, ID, descriptcion);
+                    	double costoNumeric = costoFinal != null && !costoFinal.isBlank() ? Double.parseDouble(costoFinal): 0;
+                        promocion = new PromoAbsoluta(atraccionList, tipoAtraccion, nombre, costoNumeric, true, ID, descriptcion);
                         break;
                     default:
                         //throw new Exception("mal tipo de promo");
                         break;
                 }
-                if (ID != -1) {
-                    promocionService.update(promocion);
+                if(promocion.isValid()) {
+                	if (ID != -1) {
+                        promocionService.update(promocion);
+                    } else {
+                        promocionService.create(promocion);
+                    }
+                	 resp.sendRedirect("lista.adm");
                 } else {
-                    promocionService.create(promocion);
+                	String viewState = ID != -1 ? "update": "create";
+                	List<TipoAtraccion> tipoAtraccionList = tipoAtraccionService.list();
+                    req.setAttribute("tipoAtraccionList", tipoAtraccionList);
+                    List<Atraccion> allAtraccionList = atraccionService.list();
+                    req.setAttribute("atraccionList", allAtraccionList);
+                	req.setAttribute("viewState", viewState);
+                    req.setAttribute("selectedMenu", "promociones");
+                    req.setAttribute("promocion", promocion);
+                    req.setAttribute("errors", promocion.validate());
+                    getServletContext()
+	                    .getRequestDispatcher("/views/promociones/form.jsp")
+	                    .forward(req, resp);
                 }
+                
 
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            resp.sendRedirect("lista.adm");
         } else {
             resp.sendRedirect("/tierramedia/welcome");
         }

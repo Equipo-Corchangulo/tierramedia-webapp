@@ -3,7 +3,7 @@ package persistence.commons;
 import java.sql.*;
 
 public class ConnectionProvider {
-    private static String url = "jdbc:sqlite:C:\\Users\\Luis\\Documents\\josy\\tierramedia-webapp\\db\\tierramedia.db";
+    private static String url = "jdbc:sqlite:C:\\Users\\blion\\eclipse-workspace\\tierramedia\\db\\tierramedia.db";
     private static Connection connection;
 
     public static Connection getConnection() throws SQLException {

@@ -53,17 +53,29 @@ public class TipoAtraccionesDinamicServlet extends HttpServlet implements Servle
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
         if (logedUser != null && logedUser.isAdmin()) {
+        	
             String id = req.getParameter("id");
             String nombre = req.getParameter("nombre");
-            if (id != null) {
-                int numericId = Integer.parseInt(id);
-                TipoAtraccion tipoAtraccion = new TipoAtraccion(numericId, nombre, true);
-                tipoAtraccionService.update(tipoAtraccion);
-            } else {
-                TipoAtraccion tipoAtraccion = new TipoAtraccion(nombre);
-                tipoAtraccionService.create(tipoAtraccion);
-            }
-            resp.sendRedirect("lista.adm");
+            int numericId = req.getParameter("id")!= null? Integer.parseInt(req.getParameter("id")) : -1;
+            TipoAtraccion tipoAtraccion = new TipoAtraccion(numericId,nombre, true);
+            if(tipoAtraccion.isValid()) {
+	            if (numericId != -1) {
+	                tipoAtraccionService.update(tipoAtraccion);
+	            } else {
+	                tipoAtraccionService.create(tipoAtraccion);
+	            }
+
+	            resp.sendRedirect("lista.adm");
+            } else{
+            	String viewState = numericId != -1?"update":"create";
+            	req.setAttribute("viewState", viewState);
+            	req.setAttribute("tipoAtraccion", tipoAtraccion);
+            	req.setAttribute("selectedMenu", "tipo");
+            	req.setAttribute("errors", tipoAtraccion.validate());
+            	getServletContext()
+            		.getRequestDispatcher("/views/tipo/form.jsp")
+            		.forward(req, resp);
+        	 }
         } else {
             resp.sendRedirect("/tierramedia/welcome");
         }

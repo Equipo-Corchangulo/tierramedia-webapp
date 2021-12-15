@@ -22,7 +22,7 @@
                    </div>
                    <div class="card-body">
                        <form
-                           action="modelchange.adm${tipoAtraccion != null ? '?id=' : ''}${tipoAtraccion != null ? String.valueOf(tipoAtraccion.getID()) :''}"
+                           action="modelchange.adm${viewState != 'create' ? '?id=' : ''}${viewState != 'create' && tipoAtraccion != null ? String.valueOf(tipoAtraccion.getID()) :''}"
                             method="post"
                        >
                            <div class="form-floating">
@@ -37,7 +37,13 @@
                        </form>
                    </div>
                </div>
-
+			<c:forEach items="${errors}" var="error">
+			<div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+			  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+			  <strong>Error! en campo: ${error.key}  ${error.value}</strong>
+		  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			</c:forEach>
            </div>
        </div>
 </body>

@@ -22,7 +22,7 @@
                    </div>
                    <div class="card-body">
                        <form
-                           action="modelchange.adm${promocion != null ? '?id=' : ''}${promocion != null ? String.valueOf(promocion.getID()) :''}"
+                           action="modelchange.adm${!viewState.equals('create')? '?id=' : ''}${!viewState.equals('create') && promocion != null ? String.valueOf(promocion.getID()) :''}"
                             method="post"
                        >
                           <div class="form-floating pt-2">
@@ -72,6 +72,7 @@
                           </div>
                           <div class="form-floating pt-2" id="extra">
                             <select id="extrain" name="extra" class="form-control form-select" aria-label="Disabled select example" <c:if test = "${promocion != null && promocion.getTipoPromo()== 'AXB'}">value = "${promocion.getAtraccionExtra().getID()}"</c:if>>
+                            <option value=""></option>
                                <c:forEach items="${atraccionList}" var="atraccion">
                                   <option value="${atraccion.getID()}" <c:if test ="${promocion != null && promocion.getTipoPromo()== 'AXB' && promocion.getAtraccionExtra().getID() == atraccion.getID()}"> selected </c:if> > ${atraccion.getNombre()} </option>
                               </c:forEach>
@@ -87,7 +88,13 @@
                        </form>
                    </div>
                </div>
-
+				<c:forEach items="${errors}" var="error">
+				<div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+				  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+				  <strong>Error! en campo: ${error.key}  ${error.value}</strong>
+			  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+				</c:forEach>
            </div>
        </div>
        <jsp:include page="/partials/promocionscript.jsp"></jsp:include>
