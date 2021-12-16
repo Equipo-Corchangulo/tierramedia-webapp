@@ -24,11 +24,6 @@
 
    <jsp:include page="/partials/nav.jsp"></jsp:include>
 
-    <div class="row pt-3 d-inline-flex justify-content-center">
-        <a type="button" href="modelchange.adm" class="btn btn-success d-inline-flex justify-content-center">
-            <i class="material-icons">add</i> Nueva promocion</a>
-    </div>
-
     <div class="row">
         <div class="col-md-9 mx-auto pt-3">
             <table class="table datatable">
@@ -66,6 +61,13 @@
 			                                    <i class="material-icons">edit</i></a>
 			                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ promocion.getID() }">
 			                                    <i class="material-icons">delete</i></a>
+							
+							<div class="row pt-3 d-inline-flex justify-content-center">
+                                                            <a type="button" href="modelchange.adm" 
+							       class="btn btn-success d-inline-flex justify-content-center">
+                                                               <i class="material-icons">add</i> Nueva promocion
+						            </a>
+                                                        </div>
 			                            </c:if>
 			                            <c:if test="${!user.isAdmin()}">
 			                            	<a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center  ${ user.puedeComprar(promocion)?'':'disabled' }" href="/tierramedia/buy.do?id=${ promocion.getID() }&promo=${true}">
