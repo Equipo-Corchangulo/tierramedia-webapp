@@ -11,8 +11,30 @@
 		<servlet-name>BuyServlet</servlet-name>
 		<servlet-class>controllers.noadmin.BuyServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>ProductDetailServlet</display-name>
+		<servlet-name>ProductDetailServlet</servlet-name>
+		<servlet-class>controllers.noadmin.ProductDetailServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>EditUsuarioServlet</display-name>
+		<servlet-name>EditUsuarioServlet</servlet-name>
+		<servlet-class>controllers.user.EditUsuarioServlet</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>BuyServlet</servlet-name>
 		<url-pattern>/BuyServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ProductDetailServlet</servlet-name>
+		<url-pattern>/ProductDetailServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EditUsuarioServlet</servlet-name>
+		<url-pattern>/EditUsuarioServlet</url-pattern>
 	</servlet-mapping>
 </web-app>

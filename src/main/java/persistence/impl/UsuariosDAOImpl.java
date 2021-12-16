@@ -44,7 +44,7 @@ public class UsuariosDAOImpl implements IUsuarioDAO {
 	    		result.getInt("tiempo_disponible"), 
 	    		tipoAtraccion, 
 	    		result.getInt("id"),
-	    		listadeItinerario, result.getString("username"), result.getString("password"), result.getBoolean("admin"), true);
+	    		listadeItinerario, result.getString("username"), result.getString("password"), result.getBoolean("admin"), result.getBoolean("active"));
 	}
 	
 	public static void getFacturableByIdList(String[] facturableList, boolean isPromo, List<Facturable> resultList) throws NumberFormatException, SQLException {
@@ -76,21 +76,6 @@ public class UsuariosDAOImpl implements IUsuarioDAO {
 		
 		return listaUsuarios;
 	}
-	
-	public PerfilUsuario findByID(int id) throws SQLException {
-		String query = "SELECT usuarios.*, group_concat(itinerarios.atraccion,'-') AS atracciones," +
-				" group_concat(itinerarios.promocion,'-') AS promociones" +
-				" FROM usuarios" +
-				" LEFT JOIN itinerarios ON usuarios.id = itinerarios.usuario" +
-				" GROUP BY usuarios.id WHERE usuarios.id = "+id;
-    	
-    	Connection conn = ConnectionProvider.getConnection();
-		
-		PreparedStatement statement = conn.prepareStatement(query);
-		ResultSet results = statement.executeQuery();
-		
-		return toPerfilUsuario(results);
-    }
     
 	@Override
 	public void updateUsuarios(Integer id, double nuevoPresupuesto, double nuevoTiempoDisponible) throws SQLException {
@@ -120,9 +105,19 @@ public class UsuariosDAOImpl implements IUsuarioDAO {
 	}
 
 	@Override
-	public PerfilUsuario find(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public PerfilUsuario find(Integer id) throws SQLException {
+		String query = "SELECT usuarios.*, group_concat(itinerarios.atraccion,'-') AS atracciones," +
+				" group_concat(itinerarios.promocion,'-') AS promociones" +
+				" FROM usuarios" +
+				" LEFT JOIN itinerarios ON usuarios.id = itinerarios.usuario WHERE usuarios.id = "+id +
+				" GROUP BY usuarios.id ";
+    	
+    	Connection conn = ConnectionProvider.getConnection();
+		
+		PreparedStatement statement = conn.prepareStatement(query);
+		ResultSet results = statement.executeQuery();
+		
+		return toPerfilUsuario(results);
 	}
 
 	@Override

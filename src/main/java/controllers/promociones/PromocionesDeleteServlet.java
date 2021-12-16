@@ -28,7 +28,7 @@ public class PromocionesDeleteServlet extends HttpServlet implements Servlet {
         if (logedUser != null && logedUser.isAdmin()) {
             Integer id = Integer.parseInt(req.getParameter("id"));
             promocionService.delete(id);
-            resp.sendRedirect("/tierramedia/promociones/lista.adm");
+            resp.sendRedirect("/tierramedia/promociones/lista");
         } else {
             resp.sendRedirect("/tierramedia/welcome");
         }

@@ -119,7 +119,7 @@ public class PromocionesDinamicServlet extends HttpServlet implements Servlet {
                     } else {
                         promocionService.create(promocion);
                     }
-                	 resp.sendRedirect("lista.adm");
+                	 resp.sendRedirect("lista");
                 } else {
                 	String viewState = ID != -1 ? "update": "create";
                 	List<TipoAtraccion> tipoAtraccionList = tipoAtraccionService.list();

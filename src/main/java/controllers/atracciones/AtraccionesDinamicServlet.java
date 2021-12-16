@@ -107,7 +107,7 @@ public class AtraccionesDinamicServlet extends HttpServlet implements Servlet {
 	                    atraccionService.create(atraccion);
 	                }
 
-	                resp.sendRedirect("lista.adm");
+	                resp.sendRedirect("lista");
                 } else {
                 	String viewState = atraccion.getID() != -1? "update":"create";
     				req.setAttribute("errors", atraccion.validate());

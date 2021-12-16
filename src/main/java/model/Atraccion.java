@@ -40,7 +40,7 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	@Override
 	public String toString() {
 		return "Atraccion: " + nombre + ", duracion: " + tiempoPromedio + ", costo: " + costoVisita +
-				" tipo de atraccion: " + tipoAtraccion  + " cupo "+ cupoDiario +"\n";
+				" tipo de atraccion: " + tipoAtraccion.getName()  + " cupo "+ cupoDiario +"</br>";
 
 	}
 

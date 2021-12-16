@@ -21,14 +21,14 @@ public class PerfilUsuario extends ActivableItem{
 	private boolean isAdmin;
 	private Integer Id;
 
-	public PerfilUsuario(Integer Id, String nombre, double presupuesto, int tiempoDisponible,
+	public PerfilUsuario(Integer Id, String nombre, double presupuesto, double tiempoDisponible,
 						 TipoAtraccion tipoDeAtraccion, String username,
 			String password, boolean isAdmin, boolean active) {
 		this( nombre,  presupuesto,  tiempoDisponible, tipoDeAtraccion,  username, password,  isAdmin,  active);
 		this.Id = Id;
 	}
 
-	public PerfilUsuario(String nombre, Double presupuesto, int tiempoDisponible, TipoAtraccion tipoDeAtraccion, String username,
+	public PerfilUsuario(String nombre, Double presupuesto, double tiempoDisponible, TipoAtraccion tipoDeAtraccion, String username,
 			String password, Boolean isAdmin, boolean active) {
 		super(active);
 		this.nombre = nombre;
@@ -164,7 +164,7 @@ public class PerfilUsuario extends ActivableItem{
 		if(username.isBlank()) errors.put("name", "El nombre es requerido");	
 		if(password.isBlank()) errors.put("password", "La contraseña es requerida");
 		else if(password.length() < 6) errors.put("password", "La contraseña debe tener al menos 6 caracteres");
-		if(presupuesto < 0) errors.put("price", "El dinero debe ser positivo");
+		if(presupuesto < 1) errors.put("price", "El dinero debe ser positivo");
 		if(tiempoDisponible <=0) errors.put("tiempoDisponible", "el tiempo disponible del usuario debe ser mayor o igual a 1");
 		System.out.println(errors);
 		return errors;

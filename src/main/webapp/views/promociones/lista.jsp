@@ -48,13 +48,13 @@
 	                <c:forEach items="${ promocionList }" var="promocion">
 						<c:if test="${ promocion.isActive() }">
 							<tr>
-		                        <th scope="row"><c:out value="${ promocion.getID() }"></c:out></th>
-		                        <td><c:out value="${ promocion.getNombreDePromocion() }"></c:out></td>
-		                        <td><c:out value="${ promocion.getTipoPromo().toString()}"></c:out></td>
-		                        <td><c:out value="${ promocion.getTipoDeAtraccion().getName() }"></c:out></td>
-		                        <td><c:out value="${ promocion.obtenerTiempoTotal() }"></c:out></td>
-		                        <td><c:out value="${ promocion.obtenerCostoTotal() }"></c:out></td>
-		                        <td>
+		                        <th scope="row" onclick="verPromo(${promocion.getID()}, ${promocion.esPromocion() })"><c:out value="${ promocion.getID() }"></c:out></th>
+		                        <td onclick="verPromo(${promocion.getID()}, ${promocion.esPromocion() })"><c:out value="${ promocion.getNombreDePromocion() }"></c:out></td>
+		                        <td onclick="verPromo(${promocion.getID()}, ${promocion.esPromocion() })"><c:out value="${ promocion.getTipoPromo().toString()}"></c:out></td>
+		                        <td onclick="verPromo(${promocion.getID()}, ${promocion.esPromocion() })"><c:out value="${ promocion.getTipoDeAtraccion().getName() }"></c:out></td>
+		                        <td onclick="verPromo(${promocion.getID()}, ${promocion.esPromocion() })"><c:out value="${ promocion.obtenerTiempoTotal() }"></c:out></td>
+		                        <td onclick="verPromo(${promocion.getID()}, ${promocion.esPromocion() })"><c:out value="${ promocion.obtenerCostoTotal() }"></c:out></td>
+		                        <td onclick="verPromo(${promocion.getID()}, ${promocion.esPromocion() })">
 		                        	<c:forEach items="${ promocion.getListaDeAtracciones() }" var="atraccion">
 		                        		| <c:out value='${ atraccion.getNombre()}'></c:out> |
 		                        	</c:forEach>
@@ -67,8 +67,8 @@
 			                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ promocion.getID() }">
 			                                    <i class="material-icons">delete</i></a>
 			                            </c:if>
-			                            <c:if test="${!user.isAdmin() }">
-			                            	<a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="/tierramedia/buy.do?id=${ promocion.getID() }&promo=${true}">
+			                            <c:if test="${!user.isAdmin()}">
+			                            	<a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center  ${ user.puedeComprar(promocion)?'':'disabled' }" href="/tierramedia/buy.do?id=${ promocion.getID() }&promo=${true}">
 												<i class="material-icons">shopping_cart</i></a>
 			                            </c:if>
 		                            </div>

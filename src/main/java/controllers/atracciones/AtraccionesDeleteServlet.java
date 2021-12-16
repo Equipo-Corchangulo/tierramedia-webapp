@@ -28,7 +28,7 @@ public class AtraccionesDeleteServlet extends HttpServlet implements Servlet {
         if (logedUser != null && logedUser.isAdmin()) {
             Integer id = Integer.parseInt(req.getParameter("id"));
             atraccionService.delete(id);
-            resp.sendRedirect("/tierramedia/atracciones/lista.adm");
+            resp.sendRedirect("/tierramedia/atracciones/lista");
         } else {
             resp.sendRedirect("/tierramedia/welcome");
         }

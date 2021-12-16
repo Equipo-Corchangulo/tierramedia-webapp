@@ -48,13 +48,13 @@
 	                <c:forEach items="${ atraccionList }" var="atraccion">
 						<c:if test="${ atraccion.isActive() }">
 							<tr>
-		                        <th scope="row"><c:out value="${ atraccion.getID() }"></c:out></th>
-		                        <td><img class="col-md-6" src="/tierramedia/uploadfiles/${ atraccion.getImageDir() }" alt="Italian Trulli"></td>
-		                        <td><c:out value="${ atraccion.getNombre() }"></c:out></td>
-		                        <td><c:out value="${ atraccion.obtenerCostoTotal() }"></c:out></td>
-		                        <td><c:out value="${ atraccion.obtenerTiempoTotal() }"></c:out></td>
-		                        <td><c:out value="${ atraccion.getTipoAtraccion().getName() }"></c:out></td>
-		                        <td><c:out value="${ atraccion.getCupo() }"></c:out></td>
+		                        <th onclick="verPromo(${atraccion.getID()}, ${atraccion.esPromocion() })" scope="row"><c:out value="${ atraccion.getID() }"></c:out></th>
+		                        <td onclick="verPromo(${atraccion.getID()}, ${atraccion.esPromocion() })"><img class="col-md-6" src="/tierramedia/uploadfiles/${ atraccion.getImageDir() }" alt="Italian Trulli"></td>
+		                        <td onclick="verPromo(${atraccion.getID()}, ${atraccion.esPromocion() })"><c:out value="${ atraccion.getNombre() }"></c:out></td>
+		                        <td onclick="verPromo(${atraccion.getID()}, ${atraccion.esPromocion() })"><c:out value="${ atraccion.obtenerCostoTotal() }"></c:out></td>
+		                        <td onclick="verPromo(${atraccion.getID()}, ${atraccion.esPromocion() })"><c:out value="${ atraccion.obtenerTiempoTotal() }"></c:out></td>
+		                        <td onclick="verPromo(${atraccion.getID()}, ${atraccion.esPromocion() })"><c:out value="${ atraccion.getTipoAtraccion().getName() }"></c:out></td>
+		                        <td onclick="verPromo(${atraccion.getID()}, ${atraccion.esPromocion() })"><c:out value="${ atraccion.getCupo() }"></c:out></td>
 		                        <td>
 		                        <div class="row justify-content-between">
 									<c:choose>
@@ -66,13 +66,11 @@
 				                                    <i class="material-icons">delete</i></a>
 				                            
 										</c:when>
-										<c:when test="${ user.puedeComprar(atraccion) && atraccion.hayCupo() }">
-											<a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="/tierramedia/buy.do?id=${ atraccion.getID() }&promo=${false}">
-												<i class="material-icons">shopping_cart</i>
-											</a>							
-										</c:when>
+											
 										<c:otherwise>
-											<span>No disponible</span>
+											<a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center ${ user.puedeComprar(atraccion)?'':'disabled' }" href="/tierramedia/buy.do?id=${ atraccion.getID() }&promo=${false}">
+												<i class="material-icons">shopping_cart</i>
+											</a>
 										</c:otherwise>
 									</c:choose>
 								</div>

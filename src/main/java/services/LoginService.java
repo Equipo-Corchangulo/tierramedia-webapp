@@ -12,6 +12,6 @@ public class LoginService {
     	if (user == null || !user.auth(password)) {
     		return null;
     	}
-    	return user;
+    	return user.isActive()?user : null;
 	}
 }

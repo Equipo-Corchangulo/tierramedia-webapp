@@ -13,13 +13,12 @@ import model.Facturable;
 import model.PerfilUsuario;
 import services.AtraccionService;
 import services.PromocionService;
-import jakarta.servlet.Servlet;
 
 /**
- * Servlet implementation class BuyServlet
+ * Servlet implementation class ProductDetailServlet
  */
-@WebServlet("/buy.do")
-public class BuyServlet extends HttpServlet implements Servlet {
+@WebServlet("/detail")
+public class ProductDetailServlet extends HttpServlet implements Servlet {
 	private static final long serialVersionUID = 1L;
 	AtraccionService atraccionService;
 	PromocionService promocionService;
@@ -37,38 +36,25 @@ public class BuyServlet extends HttpServlet implements Servlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		int id = Integer.parseInt(req.getParameter("id"));
-		boolean esPromocion = req.getParameter("promo").equals("true");
-		String redir = esPromocion ? "promociones/lista": "atracciones/lista";
 		PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
 		if(logedUser == null || logedUser.isAdmin() || !logedUser.isActive()) {
-			resp.sendRedirect("welcome");
+			resp.sendRedirect("/tierramedia/welcome");
 		} else {
 			
+			int id = Integer.parseInt(req.getParameter("id"));
+			boolean esPromo = Boolean.parseBoolean(req.getParameter("promo"));
 			try {
-				Facturable facturable =(Facturable) (esPromocion? promocionService.find(id): atraccionService.find(id));
-				if(logedUser.puedeComprar(facturable)) {
-				logedUser.agregarAtraccion(facturable);
-				logedUser.update();
-				}
-				resp.sendRedirect(redir);
+				Facturable facturable = esPromo ? promocionService.find(id) : atraccionService.find(id);
+				req.setAttribute("facturable", facturable);
+				getServletContext()
+				.getRequestDispatcher("/views/noadmin/detail.jsp")
+					.forward(req, resp);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				resp.sendRedirect("welcome");
 			}
 			
 		}
-		
-		
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		;
 	}
 
 }

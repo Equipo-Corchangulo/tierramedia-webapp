@@ -41,7 +41,7 @@
 		                <c:set var = "first" scope = "session" value = "${true}"/>
 		            	<c:forEach items="${listaDeFacturables }" var="facturable">
 		            	
-							<c:if test="${ facturable.isActive() }">
+							<c:if test="${ facturable.isActive() && user.puedeComprar(facturable)}">
 				            	<div class="carousel-item ${first?'active':'' }" onclick="verPromo(${facturable.getID()}, ${facturable.esPromocion() })">
 				            		<img class="d-block w-100" 
 				            		 <c:choose>
@@ -52,8 +52,8 @@
 								           		src="/tierramedia/uploadfiles/${ facturable.getImageDir()}" alt="no image">
 								           </c:otherwise>
 						             </c:choose>
-						             <div class="carousel-caption d-none d-md-block">
-									    <h5>${facturable.esPromocion()? facturable.getNombreDePromocion(): facturable.getNombre() }</h5>
+						             <div class="carousel-caption d-none d-md-block ">
+									    <h5 class="text-white">${facturable.esPromocion()? facturable.getNombreDePromocion(): facturable.getNombre() }</h5>
 									    <p>Costo: ${facturable.obtenerCostoTotal() } Tiempo: ${facturable.obtenerTiempoTotal() }</p>
 									  </div>
 				                </div>
@@ -99,6 +99,7 @@
         <br>
         <br>
     </div>
+    
 </body>
 
 </html>

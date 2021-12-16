@@ -101,11 +101,11 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 
 	@Override
 	public String toString() {
-		String salida = "Promocion: "+ this.nombreDePromocion
-				+ " del tipo: " + this.getTipo()
-				+ " costo: " + this.obtenerCostoTotal()
-				+ " Tiempo requerido: " + this.obtenerTiempoTotal() + "\n"
-				+ "El paquete incluye: \n";
+		String salida = "Promocion: "+ this.nombreDePromocion+ "</br>"
+				+ " del tipo: " + this.getTipo().getName()
+				+ " costo: " + this.obtenerCostoTotal()+ "</br>"
+				+ " Tiempo requerido: " + this.obtenerTiempoTotal() + "</br>"
+				+ "El paquete incluye: </br>";
 			for (Facturable facturable : listaDeAtracciones) {
 				salida += " " + facturable.toString();
 			}
