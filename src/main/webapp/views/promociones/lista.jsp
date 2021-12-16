@@ -24,13 +24,15 @@
 
    <jsp:include page="/partials/nav.jsp"></jsp:include>
 	
+	<c:if test="${ user.isAdmin() }">
 	<div class="row pt-3 d-inline-flex justify-content-center">
               <a type="button" href="modelchange.adm" 
 		 class="btn btn-success d-inline-flex justify-content-center">
                   <i class="material-icons">add</i> Nueva promocion
 	      </a>
          </div>
-
+        </c:if>
+	
     <div class="row">
         <div class="col-md-9 mx-auto pt-3">
             <table class="table datatable">
