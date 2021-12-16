@@ -1,13 +1,13 @@
 ﻿# Tierra Media
 
-Equipo Corchángulo
+#Equipo Corchángulo
 
 Integrantes:
--Farias, Joselys
--Miranda, Micaela
--Churko, Irina
--Valy, Mariano
--Silveira Annoni, Julián
+ - Farias, Joselys
+ - Miranda, Micaela
+ - Churko, Irina
+ - Valy, Mariano
+ - Silveira Annoni, Julián
 
 
 ## Capturas de pantalla de la Webapp
