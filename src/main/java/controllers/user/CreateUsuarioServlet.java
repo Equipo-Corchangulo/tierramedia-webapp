@@ -1,6 +1,7 @@
 package controllers.user;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletException;
@@ -59,7 +60,13 @@ public class CreateUsuarioServlet extends HttpServlet implements Servlet {
 				e.printStackTrace();
 			}
 
-			PerfilUsuario user = usuarioService.create(nombre, username, password, money, tiempo, isAdmin, tipo, true);
+			PerfilUsuario user = null;
+			try {
+				user = usuarioService.create(nombre, username, password, money, tiempo, isAdmin, tipo, true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			if (user.isValid()) {
 				resp.sendRedirect("lista.adm");

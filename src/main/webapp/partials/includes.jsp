@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-<link href="../assets/css/registro.css" rel="stylesheet">
+<link href="/tierramedia/assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="/tierramedia/assets/css/registro.css" rel="stylesheet">
 <!-- scripts -->
 
 <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

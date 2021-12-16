@@ -23,11 +23,11 @@ public class TipoAtraccionService {
         return DAOFactory.getTipoAtraccionDAO().find(id);
     }
 
-    public void create(TipoAtraccion tipoAtraccion) {
+    public void create(TipoAtraccion tipoAtraccion) throws SQLException {
         DAOFactory.getTipoAtraccionDAO().insert(tipoAtraccion);
     }
 
-    public void update(TipoAtraccion tipoAtraccion){
+    public void update(TipoAtraccion tipoAtraccion) throws SQLException{
         DAOFactory.getTipoAtraccionDAO().update(tipoAtraccion);
     }
 }

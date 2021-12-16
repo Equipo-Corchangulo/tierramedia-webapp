@@ -88,7 +88,13 @@ public abstract class Promocion extends ActivableItem  implements Facturable {
 	public String getNombreDePromocion() {
 		return nombreDePromocion;
 	}
-
+	
+	@Override
+	public void update() throws SQLException {
+		for(Facturable atraccion : listaDeAtracciones){
+			atraccion.update();
+		}
+	}
 	public void setNombreDePromocion(String nombreDePromocion) {
 		this.nombreDePromocion = nombreDePromocion;
 	}

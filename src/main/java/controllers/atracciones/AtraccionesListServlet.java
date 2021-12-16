@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.PerfilUsuario;
 import services.AtraccionService;
 
-@WebServlet("/atracciones/lista.adm")
+@WebServlet("/atracciones/lista")
 public class AtraccionesListServlet extends HttpServlet implements Servlet {
 	private static final String UPLOAD_DIRECTORY = "uploadfiles";
 	private AtraccionService atraccionService;
@@ -27,7 +27,7 @@ public class AtraccionesListServlet extends HttpServlet implements Servlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
-		if (logedUser != null && logedUser.isAdmin()) {
+		if (logedUser != null) {
 			try {
 				req.setAttribute("atraccionList", atraccionService.list());
 			} catch (SQLException e) {
@@ -35,6 +35,13 @@ public class AtraccionesListServlet extends HttpServlet implements Servlet {
 				e.printStackTrace();
 			}
 			req.setAttribute("selectedMenu", "atracciones");
+			try {
+				Boolean puede =  logedUser.puedeComprar(atraccionService.list().get(0));
+				boolean cupo =  atraccionService.list().get(0).hayCupo();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			getServletContext()
 					.getRequestDispatcher("/views/atracciones/lista.jsp")
 					.forward(req, resp);

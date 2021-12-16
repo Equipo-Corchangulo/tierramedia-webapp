@@ -1,7 +1,11 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import persistence.commons.DAOFactory;
+import persistence.impl.ItinerarioDAO;
 
 public class Itinerario {
 
@@ -9,6 +13,17 @@ public class Itinerario {
 	private double costoMonedas;
 	private List<Facturable> ListaDeVisitas = new ArrayList<Facturable>();
 
+
+	public Itinerario(List<Facturable> listaDeItinerario) {
+		for (Facturable facturable : listaDeItinerario) {
+			agregarAtraccion(facturable);
+		}
+	}
+	
+
+	public Itinerario() {
+		super();
+	}
 
 	public double getHorasNecesarias() {
 		return horasNecesarias;
@@ -49,5 +64,27 @@ public class Itinerario {
 			salida += facturable.toString();
 		}
 		return salida;
+	}
+	public void update(int id) throws SQLException{
+			ItinerarioDAO itinerarioDAO = DAOFactory.getItinerarioDAO();
+		for(Facturable facturable : ListaDeVisitas) {
+			facturable.update();
+			
+			int atraccionId = 0;
+			int promocionId = 0;
+			
+			if (!facturable.esPromocion())
+			{
+				atraccionId = facturable.getID();
+			}
+			else
+			{
+				promocionId = facturable.getID();
+			}
+			// solo agregamos al itinerario si no existe ya en la base de datos.
+			if(!itinerarioDAO.existe(id, atraccionId, promocionId)) {
+				itinerarioDAO.insertar(id, atraccionId, promocionId);
+			}
+		}
 	}
 }

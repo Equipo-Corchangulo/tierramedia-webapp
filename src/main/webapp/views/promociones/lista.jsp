@@ -61,10 +61,16 @@
 		                        </td>
 		                        <td>
 		                            <div class="row justify-content-between">
-		                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="modelchange.adm?id=${ promocion.getID() }">
-		                                    <i class="material-icons">edit</i></a>
-		                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ promocion.getID() }">
-		                                    <i class="material-icons">delete</i></a>
+		                            	<c:if test="${ user.isAdmin() }">
+			                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="modelchange.adm?id=${ promocion.getID() }">
+			                                    <i class="material-icons">edit</i></a>
+			                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ promocion.getID() }">
+			                                    <i class="material-icons">delete</i></a>
+			                            </c:if>
+			                            <c:if test="${!user.isAdmin() }">
+			                            	<a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="/tierramedia/buy.do?id=${ promocion.getID() }&promo=${true}">
+												<i class="material-icons">shopping_cart</i></a>
+			                            </c:if>
 		                            </div>
 		                        </td>
 		                    </tr>

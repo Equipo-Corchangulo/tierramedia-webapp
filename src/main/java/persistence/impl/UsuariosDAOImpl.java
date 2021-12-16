@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.Facturable;
 import model.PerfilUsuario;
 import model.TipoAtraccion;
 import persistence.IUsuarioDAO;
@@ -18,19 +20,50 @@ import persistence.commons.DAOFactory;
 
 public class UsuariosDAOImpl implements IUsuarioDAO {
 	
-	@Override
 	public PerfilUsuario toPerfilUsuario(ResultSet result) throws SQLException {
+		List<Facturable> listadeItinerario = new ArrayList<Facturable>();
 		TipoAtraccion tipoAtraccion =  DAOFactory.getTipoAtraccionDAO().find(result.getInt("atraccion_preferida"));
-
-	    return new PerfilUsuario(result.getInt("id"), result.getString("nombre"), result.getInt("presupuesto"),
-	    		result.getInt("tiempo_disponible"),
-				tipoAtraccion, result.getString("username"),
-	    		result.getString("password"), result.getBoolean("admin"), result.getBoolean("active"));
+		
+		String atraccionesStr = result.getString("atracciones");
+		if(atraccionesStr != null)
+		{
+			String[] atraccionIdList = atraccionesStr.split("-");
+			getFacturableByIdList(atraccionIdList,false, listadeItinerario);
+		}
+		
+		String promoStr = result.getString("promociones");
+		if(promoStr != null) {
+			
+			String[] promoIdList= promoStr.split("-");
+			getFacturableByIdList(promoIdList,true, listadeItinerario);
+		}
+		
+		
+		
+	    return new PerfilUsuario(result.getString("nombre"), result.getDouble("presupuesto"), 
+	    		result.getInt("tiempo_disponible"), 
+	    		tipoAtraccion, 
+	    		result.getInt("id"),
+	    		listadeItinerario, result.getString("username"), result.getString("password"), result.getBoolean("admin"), true);
+	}
+	
+	public static void getFacturableByIdList(String[] facturableList, boolean isPromo, List<Facturable> resultList) throws NumberFormatException, SQLException {
+		AtraccionesDAO atraccionesDAO = (AtraccionesDAO) DAOFactory.getAtraccionDAO();
+		PromocionDAO promocionDAO = (PromocionDAO) DAOFactory.getPromocionDAO();
+		for(String a : facturableList) {
+			if (!isPromo)
+				resultList.add(atraccionesDAO.find(Integer.parseInt(a)));
+			else
+				resultList.add(promocionDAO.find(Integer.parseInt(a)));
+		}
 	}
 	
 	public List<PerfilUsuario> findAll() throws SQLException {
-		String query = "SELECT * FROM usuarios";
-		
+		String query = "SELECT usuarios.*, group_concat(itinerarios.atraccion,'-') AS atracciones," +
+				" group_concat(itinerarios.promocion,'-') AS promociones" +
+				" FROM usuarios" +
+				" LEFT JOIN itinerarios ON usuarios.id = itinerarios.usuario" +
+				" GROUP BY usuarios.id";
 		Connection conn = ConnectionProvider.getConnection();
 		
 		PreparedStatement statement = conn.prepareStatement(query);
@@ -45,7 +78,11 @@ public class UsuariosDAOImpl implements IUsuarioDAO {
 	}
 	
 	public PerfilUsuario findByID(int id) throws SQLException {
-    	String query = "SELECT * FROM usuarios LEFT JOIN itinerarios ON itinerarios.usuario = usuarios.id where usuarios.id = " + id;
+		String query = "SELECT usuarios.*, group_concat(itinerarios.atraccion,'-') AS atracciones," +
+				" group_concat(itinerarios.promocion,'-') AS promociones" +
+				" FROM usuarios" +
+				" LEFT JOIN itinerarios ON usuarios.id = itinerarios.usuario" +
+				" GROUP BY usuarios.id WHERE usuarios.id = "+id;
     	
     	Connection conn = ConnectionProvider.getConnection();
 		
@@ -55,28 +92,27 @@ public class UsuariosDAOImpl implements IUsuarioDAO {
 		return toPerfilUsuario(results);
     }
     
-	
-	public static void updateUsuarios(int id, int nuevoPresupuesto, int nuevoTiempoDisponible) throws SQLException {
-		String query = "UPDATE usuarios SET presupuesto = " + nuevoPresupuesto + "tiempo_disponible= " + nuevoTiempoDisponible 
-				+ "WHERE id = " + id;
+	@Override
+	public void updateUsuarios(Integer id, double nuevoPresupuesto, double nuevoTiempoDisponible) throws SQLException {
+		String query = "UPDATE usuarios SET presupuesto = " + nuevoPresupuesto
+				+ ", tiempo_disponible = " + nuevoTiempoDisponible 
+				+ " WHERE id = " + id;
     	ConnectionProvider.executeUpdate(query);
 	}
 	
 	public PerfilUsuario findByUsername(String username) throws Exception {
 		try {
-			String sql = "SELECT * FROM usuarios WHERE username = ?";
+			String query = "SELECT usuarios.*, group_concat(itinerarios.atraccion,'-') AS atracciones," +
+					" group_concat(itinerarios.promocion,'-') AS promociones" +
+					" FROM usuarios" +
+					" LEFT JOIN itinerarios ON usuarios.id = itinerarios.usuario" + " WHERE usuarios.username = '"+username+
+					"' GROUP BY usuarios.id ";
 			Connection conn = ConnectionProvider.getConnection();
-			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, username);
 			
-			ResultSet resultados = statement.executeQuery();
-
-			PerfilUsuario usuario = null;
-			if (resultados.next()) {
-				usuario = toPerfilUsuario(resultados);
-			}
-
-			return usuario;
+			PreparedStatement statement = conn.prepareStatement(query);
+			ResultSet results = statement.executeQuery();
+			
+			return toPerfilUsuario(results);
 		} catch (Exception e) {
 			throw new Exception(e);
 			//throw new MissingDataException(e);

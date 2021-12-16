@@ -60,9 +60,19 @@ public class TipoAtraccionesDinamicServlet extends HttpServlet implements Servle
             TipoAtraccion tipoAtraccion = new TipoAtraccion(numericId,nombre, true);
             if(tipoAtraccion.isValid()) {
 	            if (numericId != -1) {
-	                tipoAtraccionService.update(tipoAtraccion);
+	                try {
+						tipoAtraccionService.update(tipoAtraccion);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	            } else {
-	                tipoAtraccionService.create(tipoAtraccion);
+	                try {
+						tipoAtraccionService.create(tipoAtraccion);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	            }
 
 	            resp.sendRedirect("lista.adm");

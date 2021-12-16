@@ -19,7 +19,7 @@ public class AtraccionService {
 		DAOFactory.getAtraccionDAO().delete(id);
 	}
 	
-	public PerfilUsuario update(Integer id, String nombre, String username, String password, Double money, int tiempo, Boolean isAdmin, TipoAtraccion tipo, boolean active) {
+	public PerfilUsuario update(Integer id, String nombre, String username, String password, Double money, int tiempo, Boolean isAdmin, TipoAtraccion tipo, boolean active) throws SQLException {
 		PerfilUsuario user = new PerfilUsuario(id, nombre, money, tiempo, 
 				tipo, username, password, isAdmin, active);
 		if(user.isValid()) {
@@ -30,15 +30,6 @@ public class AtraccionService {
 	
 	public Atraccion find(Integer id) throws SQLException {
 		return DAOFactory.getAtraccionDAO().find(id);
-	}
-	
-	public PerfilUsuario create( String nombre, String username, String password, Double money, int tiempo, boolean isAdmin, TipoAtraccion tipo, boolean active) {
-		PerfilUsuario user = new PerfilUsuario(nombre, money, tiempo, 
-				tipo, username, password, isAdmin, active);
-		if(user.isValid()) {
-			DAOFactory.getUsuarioDAO().insert(user);
-		}
-		return user;
 	}
 
 	public void delete(int id){

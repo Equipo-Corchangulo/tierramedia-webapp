@@ -18,4 +18,8 @@ public interface Facturable {
 
 	 boolean seEncuentraEnElFacturable(Facturable facturable);
 
+	 void update() throws SQLException;
+	 
+	 int getID();
+
 }

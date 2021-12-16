@@ -22,11 +22,12 @@
 <body class="text-center">
 
    <jsp:include page="/partials/nav.jsp"></jsp:include>
-
-    <div class="row pt-3 d-inline-flex justify-content-center">
-        <a type="button" href="modelchange.adm" class="btn btn-success d-inline-flex justify-content-center">
-            <i class="material-icons">add</i> Nueva Atracción</a>
-    </div>
+	<c:if test="${ user.isAdmin() }">
+	    <div class="row pt-3 d-inline-flex justify-content-center">
+	        <a type="button" href="modelchange.adm" class="btn btn-success d-inline-flex justify-content-center">
+	            <i class="material-icons">add</i> Nueva Atracción</a>
+	    </div>
+    </c:if>
 
     <div class="row">
         <div class="col-md-9 mx-auto pt-3">
@@ -55,29 +56,26 @@
 		                        <td><c:out value="${ atraccion.getTipoAtraccion().getName() }"></c:out></td>
 		                        <td><c:out value="${ atraccion.getCupo() }"></c:out></td>
 		                        <td>
-						<c:choose>
+		                        <div class="row justify-content-between">
+									<c:choose>
 							           <c:when test="${ user.isAdmin() }">
-		                            <div class="row justify-content-between">
-		                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="modelchange.adm?id=${ atraccion.getID() }">
-		                                    <i class="material-icons">edit</i></a>
-		                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ atraccion.getID() }">
-		                                    <i class="material-icons">delete</i></a>
-		                            </div>
-
-											<div class="row pt-3 d-inline-flex justify-content-center">
-												<a type="button" href="modelchange.adm"
-													class="btn btn-success d-inline-flex justify-content-center">
-													<i class="material-icons">add</i> Nueva Atracción
-												</a>
-											</div>
+				                            
+				                                <a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="modelchange.adm?id=${ atraccion.getID() }">
+				                                    <i class="material-icons">edit</i></a>
+				                                <a class="btn btn-danger col-sm-5 d-inline-flex justify-content-center" href="delete.adm?id=${ atraccion.getID() }">
+				                                    <i class="material-icons">delete</i></a>
+				                            
 										</c:when>
-							<c:when test="${ user.puedeComprar(atraccion) && Atraccion.hayCupo() }">
-								<a href="buy.do?id=${ Atraccion.getId() }">Comprar</a>							
-							</c:when>
-							<c:otherwise>
-								<span>No disponible</span>
-							</c:otherwise>
-						</c:choose>
+										<c:when test="${ user.puedeComprar(atraccion) && atraccion.hayCupo() }">
+											<a class="btn btn-primary col-sm-5 d-inline-flex justify-content-center" href="/tierramedia/buy.do?id=${ atraccion.getID() }&promo=${false}">
+												<i class="material-icons">shopping_cart</i>
+											</a>							
+										</c:when>
+										<c:otherwise>
+											<span>No disponible</span>
+										</c:otherwise>
+									</c:choose>
+								</div>
 		                        </td>
 		                    </tr>
 						</c:if>

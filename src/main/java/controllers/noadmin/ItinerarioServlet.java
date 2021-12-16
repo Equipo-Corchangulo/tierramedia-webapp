@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Itinerario;
+import model.PerfilUsuario;
 import services.ItinerarioService;
 
 
@@ -35,21 +36,18 @@ public class ItinerarioServlet extends HttpServlet implements Servlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		 Itinerario itinerario = (Itinerario) req.getSession().getAttribute("itinerario");
-	        if (itinerario != null) {
-	            Integer id = Integer.parseInt(req.getParameter("id"));
-	           	try {
-					itinerarioService.find(id);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	           	
-				getServletContext()
-						.getRequestDispatcher("/tierramedia/views/noadmin/itinerario.jsp")
-						.forward(req, resp);
+		PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
+		if (logedUser != null) {
+		    
 			
-		}	        } 
+			getServletContext()
+					.getRequestDispatcher("/views/noadmin/itinerario.jsp")
+						.forward(req, resp);
+		
+		} else {
+			resp.sendRedirect("/tierramedia/welcome");
+		}
+	} 
 	    
 		
 		

@@ -26,7 +26,7 @@ public class DAOFactory {
 	public static ITipoAtraccionDAO getTipoAtraccionDAO() { return new TipoAtraccionesDAOImpl(); }
 
 
-public static IItinerarioDAO getItinerarioDAO() {
-	return new ItinerarioDAO();
-}
+	public static ItinerarioDAO getItinerarioDAO() {
+		return new ItinerarioDAO();
+	}
 }

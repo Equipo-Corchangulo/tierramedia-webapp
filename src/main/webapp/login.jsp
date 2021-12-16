@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!DOCTYPE html>
 <html>
 <head>
-
+	<meta charset="UTF-8">
   <link href="assets/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/css/loginstyles.css" rel="stylesheet">
-<meta charset="UTF-8">
 <title>Iniciar Sesion Agencia de Viajes</title>
 </head>
 <body class="text-center">
@@ -22,7 +23,7 @@
     </div>
     <div class="form-floating">
       <input type="password" name= "password" class="form-control" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Contrase�a</label>
+      <label for="floatingPassword">Contraseña</label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Iniciar Sesion</button>
   </form>

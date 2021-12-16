@@ -9,16 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <jsp:include page="/partials/includes.jsp"></jsp:include>
-    <script type="text/javascript">
-        window.addEventListener('DOMContentLoaded', function() {
-            $('.datatable').DataTable({
-                "order": [
-                    [0, "asc"]
-                ]
-            });
-        })
-    </script>
+    <jsp:include page="/partials/homeincludes.jsp"></jsp:include>
 </head>
 <body class="text-center">
 <jsp:include page="/partials/nav.jsp"></jsp:include>
@@ -27,7 +18,7 @@
 
 	<div class="bg-light p-4 rounded">
 			<h1>
-				¡Bienvenido, <c:out value="${user.username}" />!
+				¡Bienvenido/a, <c:out value="${user.nombre}" />!
 			</h1>
 			<h4> Te presentamos algunas promociones que pueden interesarte </h4>
 	</div>
@@ -47,15 +38,28 @@
             
           
 		            <div class="carousel-inner">
-		                <div class="carousel-item active">
-		                    <img class="d-block w-100" src="assets/img/mordor1.jpg" alt="First slide">
-		                </div>
-		                <div class="carousel-item">
-		                    <img class="d-block w-100" src="assets/img/mordor2.jpg" alt="Second slide">
-		                </div>
-		                <div class="carousel-item">
-		                    <img class="d-block w-100" src="assets/img/mordor3.jpg" alt="Third slide">
-		                </div>
+		                <c:set var = "first" scope = "session" value = "${true}"/>
+		            	<c:forEach items="${listaDeFacturables }" var="facturable">
+		            	
+							<c:if test="${ facturable.isActive() }">
+				            	<div class="carousel-item ${first?'active':'' }" onclick="verPromo(${facturable.getID()}, ${facturable.esPromocion() })">
+				            		<img class="d-block w-100" 
+				            		 <c:choose>
+								           <c:when test="${ facturable.esPromocion() }">
+								           		src="/tierramedia/uploadfiles/promociones.png" alt="no image">
+								           </c:when>
+								           <c:otherwise>
+								           		src="/tierramedia/uploadfiles/${ facturable.getImageDir()}" alt="no image">
+								           </c:otherwise>
+						             </c:choose>
+						             <div class="carousel-caption d-none d-md-block">
+									    <h5>${facturable.esPromocion()? facturable.getNombreDePromocion(): facturable.getNombre() }</h5>
+									    <p>Costo: ${facturable.obtenerCostoTotal() } Tiempo: ${facturable.obtenerTiempoTotal() }</p>
+									  </div>
+				                </div>
+				                <c:set var = "first" scope = "session" value = "${false}"/>
+			                </c:if>
+		            	</c:forEach>
 		            </div>
 		            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
 		                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -85,7 +89,7 @@
                            
                 <div class="row pt-3 d-inline-flex justify-content-center">
         <a type="button" href="/tierramedia/atracciones/lista" class="btn btn-success d-inline-flex justify-content-center">
-            <i class="material-icons"></i> Conocer atracciones y promociones</a>
+            <i class="material-icons"></i> Conocer atracciones</a>
     </div>
     
 

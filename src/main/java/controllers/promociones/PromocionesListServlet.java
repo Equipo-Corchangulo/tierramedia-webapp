@@ -13,7 +13,7 @@ import model.PerfilUsuario;
 import services.AtraccionService;
 import services.PromocionService;
 
-@WebServlet("/promociones/lista.adm")
+@WebServlet("/promociones/lista")
 public class PromocionesListServlet extends HttpServlet implements Servlet {
 	private PromocionService promocionService;
 	@Override
@@ -25,7 +25,7 @@ public class PromocionesListServlet extends HttpServlet implements Servlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PerfilUsuario logedUser = (PerfilUsuario) req.getSession().getAttribute("user");
-		if (logedUser != null && logedUser.isAdmin()) {
+		if (logedUser != null) {
 			try {
 				req.setAttribute("promocionList", promocionService.list());
 			} catch (SQLException e) {

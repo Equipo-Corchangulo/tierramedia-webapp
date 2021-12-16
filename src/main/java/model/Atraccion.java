@@ -45,6 +45,12 @@ public class Atraccion  extends ActivableItem implements Facturable {
 	}
 
 	@Override
+	public void update() throws SQLException {
+
+		AtraccionesDAO.editarCupoDeAtraccion(this.ID, this.cupoDiario);
+	}
+	
+	@Override
 	public double obtenerCostoTotal() {
 
 		return this.costoVisita;

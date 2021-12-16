@@ -7,7 +7,7 @@ import model.Itinerario;
 
 public interface GenericDAO<T> {
 
-	public Itinerario find(Integer id) throws SQLException;
+	public T find(Integer id) throws SQLException;
 	public List<T> findAll() throws SQLException;
 	public int insert(T t) throws SQLException;
 	public int update(T t) throws SQLException;

@@ -3,7 +3,10 @@ package model;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
+
+import persistence.commons.DAOFactory;
 
 public class PerfilUsuario extends ActivableItem{
 
@@ -36,6 +39,13 @@ public class PerfilUsuario extends ActivableItem{
 		this.username = username;
 		this.password = password;
 		this.itinerario = new Itinerario();
+	}
+	public PerfilUsuario(String nombre, double presupuesto, int tiempoDisponible, TipoAtraccion tipoDeAtraccion, int id, List<Facturable> listaDeItinerario, String username,
+			String password, boolean isAdmin, boolean active) {
+
+		this( nombre,  presupuesto,  tiempoDisponible, tipoDeAtraccion,  username, password,  isAdmin,  active);
+		this.Id = id;
+		this.itinerario = new Itinerario (listaDeItinerario);
 	}
 
 	public Integer getId() {
@@ -142,6 +152,10 @@ public class PerfilUsuario extends ActivableItem{
 	
 	public boolean isValid() {
 		return validate().isEmpty();
+	}
+	public void update() throws SQLException {
+		DAOFactory.getUsuarioDAO().updateUsuarios(Id, this.presupuesto, this.tiempoDisponible);
+		this.itinerario.update(this.Id);
 	}
 	
 	public HashMap<String, String> validate(){
